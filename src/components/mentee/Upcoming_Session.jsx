@@ -1,0 +1,143 @@
+import React, { useEffect, useState } from 'react';
+import api from '../../api/axiosInstance';
+import { Link } from 'react-router-dom';
+
+const Upcoming_Session = () => {
+
+  const [sessions, setSessions] = useState([]);
+  const [selectedSession, setSelectedSession] = useState(null);
+  
+  const openModal = (session) => {
+  setSelectedSession(session);
+  window.$('#SessionsModal').modal('show');
+};
+
+
+  useEffect(() => {
+    fetchUpcomingSessions();
+  }, []);
+
+  const fetchUpcomingSessions = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const id = user?.id;
+
+      const res = await api.get(`/session/upcoming/${id}?type=mentee`);
+
+      setSessions(res.data.sessions);
+
+    } catch (error) {
+      console.error("Upcoming session error:", error);
+    }
+  };
+
+  return (
+    <>
+      <div className="HistoryArea">
+        <div className="HistoryHead">
+          <h3>Upcoming Sessions <Link to="/all-upcoming-sessions">View all</Link></h3>
+        </div>
+
+        <div className="HistoryBody">
+          <div className="row">
+
+            {sessions.length > 0 ? (
+              sessions.slice(0,5).map((session) => (
+                <div className="col-lg-3 col-md-6 col-sm-6" key={session.id}>
+                  <div className="SessionsBox"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => openModal(session)}
+                  >
+                    <ul>
+                      <li>
+                        <img src="/images/calendar.png" alt="" /> 
+                        {session.localDate}
+                      </li>
+
+                      <li>
+                        <img src="/images/clock.png" alt="" /> 
+                        {session.localTime}
+                      </li>
+
+                      <li>
+                        <a href="javascript:void(0)">
+                          <i className="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-12">
+                <p>No upcoming sessions found.</p>
+              </div>
+            )}
+
+          </div>
+        </div>
+      </div>
+
+      <div className="ModalBox">
+        <div className="modal fade" id="SessionsModal">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="LoginBox Sessions">
+        <div className="LoginHead">
+          <button type="button" className="Close" data-dismiss="modal">×</button>
+          <h3>Upcoming sessions</h3>
+        </div>
+
+        {selectedSession && (
+          <div className="LoginBody">
+            <aside>
+              <p>
+                <strong>Mentor:</strong>
+                <span>
+                  {selectedSession.mentor?.fullname}
+                </span>
+              </p>
+
+              <p>
+                <strong>Date/Time :</strong>
+                <span>
+                  {selectedSession.localDate} | {selectedSession.localTime}
+                </span>
+              </p>
+
+              <p>
+                <strong>Format :</strong>
+                <span>Video Call</span>
+              </p>
+
+              <p>
+                <strong>Session Type :</strong>
+                <span>
+                  Leadership Coaching
+                </span>
+              </p>
+            </aside>
+
+            <article>
+              <h4>Mentee’s Submitted Goals</h4>
+              <p>{selectedSession.description}</p>
+
+              <button data-dismiss="modal">Join Session</button>
+              <button data-dismiss="modal">Start Chat</button>
+              <button data-dismiss="modal">Reschedule</button>
+              
+            </article>
+          </div>
+        )}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    </>
+  )
+}
+
+export default Upcoming_Session;
