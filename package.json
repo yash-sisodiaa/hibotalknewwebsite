@@ -14,6 +14,8 @@
     "axios": "^1.13.4",
     "bootstrap": "^4.6.2",
     "dayjs": "^1.11.19",
+    "firebase": "^12.10.0",
+    "i18next": "^25.8.17",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
     "owl.carousel": "^2.3.4",
@@ -21,8 +23,11 @@
     "react": "^19.2.0",
     "react-calendar": "^6.0.0",
     "react-dom": "^19.2.0",
+    "react-i18next": "^16.5.6",
     "react-owl-carousel": "^2.3.3",
-    "react-router-dom": "^7.13.0"
+    "react-router-dom": "^7.13.0",
+    "react-toastify": "^11.0.5",
+    "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 const CourseSuggestion = () => {
 
     const Navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem("user"));
+  const menteeId = user?.id;
   
    // const [categories,setCategories] = useState([]);
     const [specializations, setSpecializations] = useState([]);
@@ -51,7 +54,8 @@ const fetchResources = async (categoryId) => {
   try {
     const token = localStorage.getItem('token');
 
-    const res = await api.get(`/resource/get-resources/${categoryId}`, {
+    const res = await api.get("/mentee/resources", {
+      params: { menteeId,categoryId },
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -72,13 +76,37 @@ useEffect(() => {
   fetchResources(activeSpec);
 }, [activeSpec]);
 
+
+ const handleWishlistToggle = async (resourceId, isLiked) => {
+
+  try {
+    if (isLiked) {
+      await api.delete("/wishlist/remove",{
+        data: {
+          menteeId: menteeId,
+          resourceId: resourceId
+        }
+      });
+    }else {
+      
+      await api.post("/wishlist/add", {
+        menteeId: menteeId,
+        resourceId: resourceId
+      });
+    }
+    fetchResources(activeSpec); // Refresh the resources list after toggling wishlist
+  } catch (error) {
+    console.error("Wishlist error:", error);
+  }
+}
+
   return (
 
     <>
    
     <div  className="HistoryArea">
                     <div  className="HistoryHead">
-                        <h3>Course Suggestions<Link to="/all-resources">View all</Link> </h3>
+                        <h3>Course Suggestions<Link to="/all-courses">View all</Link> </h3>
                         <ul>
                            {specializations.map((item) => (
                                 <li key={item.id}>
@@ -102,8 +130,17 @@ useEffect(() => {
                                   style={{ cursor: "pointer" }}
                                 >    
                                 <span className="Icon">
-                                    <img src="/src/assets/images/Heart.png" />
-                                </span>
+                                    <i
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleWishlistToggle(item.id, item.isLiked);
+                                      }}
+                                       className={`fa ${
+                                            item.isLiked ? "fa-heart text-danger" : "fa-heart-o"
+                                        }`}
+                                        aria-hidden="true"
+                                    ></i>
+                                  </span>
 
                                 <figure>
                                 {/* VIDEO */}
@@ -114,14 +151,14 @@ useEffect(() => {
                                     </span>
 
                                     <img
-                                        src={item.thumbnailUrl || '/src/assets/images/Program-1.png'}
+                                        src={item.thumbnailUrl || '/images/Program-1.png'}
                                         alt={item.heading}
                                     />
                                     </>
                                 )}
 
-                                {/* PDF / PPT – CUSTOM ICON */}
-                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt') && (
+                                {/* PDF / PPT / DOC – CUSTOM ICON */}
+                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
                                 <div className="OnlyIcon">
                                     {item.resourceType === 'pdf' && (
                                     <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
@@ -129,6 +166,10 @@ useEffect(() => {
 
                                     {item.resourceType === 'ppt' && (
                                     <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
+                                    )}
+
+                                    {item.resourceType === 'doc' && (
+                                    <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
                                     )}
                                 </div>
                                 )}
@@ -144,8 +185,7 @@ useEffect(() => {
                                 </div>
                             </div>
                             ))}
-
-                           
+                    
                         </div>
                     </div>
                 </div>

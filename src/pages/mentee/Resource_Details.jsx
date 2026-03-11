@@ -95,6 +95,21 @@ const Resource_Details = () => {
                       </a>
                     </div>
                   )}
+
+                  {resource.resourceType === "doc" && (
+                    <div className="OnlyIcon" style={{ height: "300px" }}>
+                      <i className="fa fa-file-word-o DocIcon" />
+                      <br />
+                      <a
+                        href={resource.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn btn-primary"
+                      >
+                        Download DOC
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -8,7 +8,9 @@ import CommunitySection from '../components/mentors/CommunitySection';
 import Mentor_Navigation from '../components/mentors/Mentor_Navigation';
 import Mentor_Sidebar from '../components/mentors/Mentor_Sidebar';
 import ResourceSection from '../components/mentors/ResourceSection';
+import Upcoming_Mentor_Session from '../components/mentors/Upcoming_Mentor_Session';
 //import CommonLoader from '../components/CommonLoader';
+import { getFcmToken } from "../utils/getFcmToken";
 
 const My_Dashboard_Mentor = () => {
 
@@ -36,6 +38,37 @@ const My_Dashboard_Mentor = () => {
   };
 }, []);
 
+////////////////notification states/////////////////////
+useEffect(() => {
+
+  const setupNotifications = async () => {
+    try {
+
+      const token = await getFcmToken();
+
+      if (token) {
+
+        await api.put(
+          "/notification-status",
+          { status: true },   // body data
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+          }
+        );
+
+      }
+
+    } catch (error) {
+      console.log("Notification setup error:", error);
+    }
+  };
+
+  setupNotifications();
+
+}, []);
+
 
 const [loading, setLoading] = useState(false);
 
@@ -58,10 +91,8 @@ const [form,setForm] = useState(initialForm)
 
 const resourceTypes = [
   { label: "PDF", value: "pdf" },
-  { label: "Video", value: "video" },
-  { label: "Document", value: "doc" },
   { label: "PowerPoint", value: "ppt" },
-  { label: "Excel", value: "excel" },
+  { label: "Doc", value: "doc" }
 ];
 
 
@@ -154,7 +185,13 @@ const resourceTypesforvideos = [
 
 const handleAddVideo = async () => {
     try {
-        setLoading(true)
+
+      if (!form.thumbnail) {
+      alert("Thumbnail is required");
+      return;
+    }
+
+      setLoading(true)
       const formData = new FormData();
 
     formData.append("heading", form.heading);
@@ -323,7 +360,7 @@ const handleAddCommunity = async () => {
             <div  className="TitleBox">
                 <h3>Dashboard</h3> 
                 <div  className="DashboardButton">
-                    <a href="my-dashboard-request.html">Booking Requests </a>
+                    <Link to="/my-dashboard-request">Booking Requests </Link>
 
                     <Link to="/my-mentor-sessions">Manage Calendar </Link>
                 </div>
@@ -331,71 +368,7 @@ const handleAddCommunity = async () => {
 
             <div  className="DashboardArea">
 
-                <div  className="HistoryArea">
-                    <div  className="HistoryHead">
-                        <h3>Upcoming Sessions <a href="">View all</a> </h3> 
-                    </div>
-                    <div  className="HistoryBody">
-                        <div  className="row">
-                            <div  className="col-lg-3 col-md-6 col-sm-6">
-                                <div  className="SessionsBox">
-                                    <p>Unlock your iPhone’s full camera potential and shoot like a pro!</p>
-                                    <ul>
-                                        <li><img src="/src/assets/images/calendar.png" /> 05 March 2025</li>
-                                        <li><img src="/src/assets/images/clock.png" /> 17:50</li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#SessionsModal">
-                                                <i  className="fa fa-angle-right" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div  className="col-lg-3 col-md-6 col-sm-6">
-                                <div  className="SessionsBox">
-                                    <p>Unlock your iPhone’s full camera potential and shoot like a pro!</p>
-                                    <ul>
-                                        <li><img src="/src/assets/images/calendar.png" /> 05 March 2025</li>
-                                        <li><img src="/src/assets/images/clock.png" /> 17:50</li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#SessionsModal">
-                                                <i  className="fa fa-angle-right" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div  className="col-lg-3 col-md-6 col-sm-6">
-                                <div  className="SessionsBox">
-                                    <p>Unlock your iPhone’s full camera potential and shoot like a pro!</p>
-                                    <ul>
-                                        <li><img src="/src/assets/images/calendar.png" /> 05 March 2025</li>
-                                        <li><img src="/src/assets/images/clock.png" /> 17:50</li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#SessionsModal">
-                                                <i  className="fa fa-angle-right" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div  className="col-lg-3 col-md-6 col-sm-6">
-                                <div  className="SessionsBox">
-                                    <p>Unlock your iPhone’s full camera potential and shoot like a pro!</p>
-                                    <ul>
-                                        <li><img src="/src/assets/images/calendar.png" /> 05 March 2025</li>
-                                        <li><img src="/src/assets/images/clock.png" /> 17:50</li>
-                                        <li>
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#SessionsModal">
-                                                <i  className="fa fa-angle-right" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Upcoming_Mentor_Session/>
 
                 
 
@@ -478,45 +451,6 @@ const handleAddCommunity = async () => {
 
  
     <div  className="ModalBox">
-        <div  className="modal fade" id="SessionsModal">
-            <div  className="modal-dialog">
-                <div  className="modal-content">
-                    <div  className="LoginBox Sessions">
-                        <div  className="LoginHead">
-                            <button type="button"  className="Close" data-dismiss="modal">×</button>
-                            <h3>Upcoming sessions</h3>
-                        </div>
-                        <div  className="LoginBody">
-                            <aside>
-                                <p>
-                                    <strong>Mentee:</strong>
-                                    <span>Alex Carter (Associate PM @Fintech)</span>
-                                </p>
-                                <p>
-                                    <strong>Date/Time :</strong>
-                                    <span>Sat,05 jun | 5:30-6:00 pm</span>
-                                </p>
-                                <p>
-                                    <strong>Format :</strong>
-                                    <span>Video Call (Zoom)</span>
-                                </p>
-                                <p>
-                                    <strong>Session Type :</strong>
-                                    <span>Leadership Coaching</span>
-                                </p>
-                            </aside>
-                            <article>
-                                <h4>Mentee’s Submitted Goals</h4>
-                                <p>“I want to sound more confident in exec <br/> meetings and reduce ‘ums’ when challenged.”</p>
-                                <button data-dismiss="modal">Reschedule</button>
-                                <a data-dismiss="modal">Cancel</a>
-                            </article>
-                        </div> 
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
         <div  className="modal fade" id="ResourcesModal">
             <div  className="modal-dialog">
@@ -527,21 +461,7 @@ const handleAddCommunity = async () => {
                             <h3>Add Resources</h3>
                         </div>
                         <div  className="LoginBody">
-                            {form.resourceType === "video" && (
-                            <div className="form-group">
-                                <div className="UploadBox">
-                                <p>
-                                    Upload Thumbnail <img src="/src/assets/images/Upload.png" />
-                                </p>
-                                <input
-                                    type="file"
-                                    name="thumbnail"
-                                    accept="image/*"
-                                    onChange={handleChange}
-                                />
-                                </div>
-                            </div>
-                            )}
+                            
 
 
                            <div className="form-group">
@@ -569,6 +489,15 @@ const handleAddCommunity = async () => {
                                             type="file"
                                             name="file"
                                             className="form-control"
+                                            accept={
+                                              form.resourceType === "pdf"
+                                                ? ".pdf"
+                                                : form.resourceType === "ppt"
+                                                ? ".ppt,.pptx"
+                                                : form.resourceType === "doc"
+                                                ? ".doc,.docx"
+                                                : ""
+                                            }
                                             onChange={handleChange}
                                             />
                                         </div>
@@ -632,7 +561,14 @@ const handleAddCommunity = async () => {
                                     uploaded <br/> resource.</p>
                             </article>
 
-                            <button data-dismiss="modal">Manage Resources</button>
+                            <button
+                                onClick={() => {
+                                  window.$('#SuccessfullModal').modal('hide');
+                                  navigate("/manage-resources");
+                                }}
+                              >
+                                Manage Resources
+                              </button>
                         </div>
                     </div>
                 </div>
@@ -640,65 +576,65 @@ const handleAddCommunity = async () => {
         </div>
 
         <div className="modal fade" id="CommunityModal">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="LoginBox Resources">
-        <div className="LoginHead">
-          <button
-            type="button"
-            className="Close"
-            data-dismiss="modal"
-          >
-            ×
-          </button>
-          <h3>Add Community Post</h3>
-        </div>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="LoginBox Resources">
+                <div className="LoginHead">
+                  <button
+                    type="button"
+                    className="Close"
+                    data-dismiss="modal"
+                  >
+                    ×
+                  </button>
+                  <h3>Add Community Post</h3>
+                </div>
 
-        <div className="LoginBody">
-          <div className="form-group">
-            <div className="UploadBox">
-              <p>
-                Upload Thumbnail{" "}
-                <img src="/src/assets/images/Upload.png" />
-              </p>
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleCommunityChange}
-              />
+                <div className="LoginBody">
+                  <div className="form-group">
+                    <div className="UploadBox">
+                      <p>
+                        Upload Thumbnail{" "}
+                        <img src="/src/assets/images/Upload.png" />
+                      </p>
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleCommunityChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Title"
+                      name="title"
+                      value={communityForm.title}
+                      onChange={handleCommunityChange}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <textarea
+                      rows="5"
+                      className="form-control"
+                      placeholder="Caption"
+                      name="description"
+                      value={communityForm.description}
+                      onChange={handleCommunityChange}
+                    />
+                  </div>
+
+                  <button onClick={handleAddCommunity}>
+                    Upload File
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Title"
-              name="title"
-              value={communityForm.title}
-              onChange={handleCommunityChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <textarea
-              rows="5"
-              className="form-control"
-              placeholder="Caption"
-              name="description"
-              value={communityForm.description}
-              onChange={handleCommunityChange}
-            />
-          </div>
-
-          <button onClick={handleAddCommunity}>
-            Upload File
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
         </div>
 
         <div  className="modal fade" id="VideoModal">
@@ -729,21 +665,21 @@ const handleAddCommunity = async () => {
 
 
                             <div className="form-group">
-  <label className="mb-2">Resource Type</label>
+                              <label className="mb-2">Resource Type</label>
 
-  <select
-    className="form-control"
-    name="resourceType"
-    value={form.resourceType}
-    onChange={handleChange}
-  >
+                              <select
+                                className="form-control"
+                                name="resourceType"
+                                value={form.resourceType}
+                                onChange={handleChange}
+                              >
 
-    {resourceTypesforvideos.map((type) => (
-      <option key={type.value} value={type.value}>
-        {type.label}
-      </option>
-    ))}
-  </select>
+                                {resourceTypesforvideos.map((type) => (
+                                  <option key={type.value} value={type.value}>
+                                    {type.label}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
 
 
@@ -753,6 +689,7 @@ const handleAddCommunity = async () => {
                                             name="file"
                                             className="form-control"
                                             onChange={handleChange}
+                                            accept="video/*"
                                             />
                                         </div>
 
@@ -802,4 +739,4 @@ const handleAddCommunity = async () => {
   )
 }
 
-export default My_Dashboard_Mentor
+export default My_Dashboard_Mentor;

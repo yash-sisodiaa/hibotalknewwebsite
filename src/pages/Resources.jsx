@@ -18,7 +18,7 @@ const Resources = () => {
             <div  className="container-fluid">
                 <div  className="TitleBox"> 
                     <div  className="SearchBox">
-                        <span><img src=" /src/assets/images/search.png"/></span>
+                        <span><img src="/images/search.png"/></span>
                         <input type="text" placeholder="Search"/>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ const Resources = () => {
                             <figure>
                                 <span  className="Fav"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
                                 <span  className="Play"><i  className="fa fa-play" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -40,9 +40,9 @@ const Resources = () => {
                     <div  className="col-xl-3 col-lg-4 col-md-4 col-sm-6">
                         <div  className="ProgramBox">
                             <figure>
-                                <span  className="PDF"><img src=" /src/assets/images/PDF.png"/> </span>
+                                <span  className="PDF"><img src="/images/PDF.png"/> </span>
                                 <span  className="Fav active"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -56,7 +56,7 @@ const Resources = () => {
                             <figure>
                                 <span  className="Fav"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
                                 <span  className="Play"><i  className="fa fa-play" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -68,9 +68,9 @@ const Resources = () => {
                     <div  className="col-xl-3 col-lg-4 col-md-4 col-sm-6">
                         <div  className="ProgramBox">
                             <figure>
-                                <span  className="PDF"><img src=" /src/assets/images/PDF.png"/> </span>
+                                <span  className="PDF"><img src="/images/PDF.png"/> </span>
                                 <span  className="Fav active"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -84,7 +84,7 @@ const Resources = () => {
                             <figure>
                                 <span  className="Fav"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
                                 <span  className="Play"><i  className="fa fa-play" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -96,9 +96,9 @@ const Resources = () => {
                     <div  className="col-xl-3 col-lg-4 col-md-4 col-sm-6">
                         <div  className="ProgramBox">
                             <figure>
-                                <span  className="PDF"><img src=" /src/assets/images/PDF.png"/> </span>
+                                <span  className="PDF"><img src="/images/PDF.png"/> </span>
                                 <span  className="Fav active"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -112,7 +112,7 @@ const Resources = () => {
                             <figure>
                                 <span  className="Fav"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
                                 <span  className="Play"><i  className="fa fa-play" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>
@@ -124,9 +124,9 @@ const Resources = () => {
                     <div  className="col-xl-3 col-lg-4 col-md-4 col-sm-6">
                         <div  className="ProgramBox">
                             <figure>
-                                <span  className="PDF"><img src=" /src/assets/images/PDF.png"/> </span>
+                                <span  className="PDF"><img src="/images/PDF.png"/> </span>
                                 <span  className="Fav active"><i  className="fa fa-bookmark" aria-hidden="true"></i></span>
-                                <img src=" /src/assets/images/Program-1.png"/>
+                                <img src="/images/Program-1.png"/>
                             </figure>
                             <figcaption>
                                 <h6>2,000 students <span>1h 42m</span> </h6>

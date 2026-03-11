@@ -1,13 +1,46 @@
 import React from 'react'
+import { useEffect } from 'react';
 import MentorSection from '../components/mentee/MentorSection'
 import CourseSuggestion from '../components/mentee/CourseSuggestion'
 import CommunitySection from '../components/mentee/CommunitySection'
 import Mentee_Navigation from '../components/mentee/Mentee_Navigation'
 import Mentee_Sidebar from '../components/mentee/Mentee_Sidebar'
 import Upcoming_Session from '../components/mentee/Upcoming_Session'
+import { getFcmToken } from "../utils/getFcmToken";
+import api from '../api/axiosInstance';
 
 const My_Dashboard_Mentee = () => {
 
+    ////////////////notification states/////////////////////
+    useEffect(() => {
+    
+      const setupNotifications = async () => {
+        try {
+    
+          const token = await getFcmToken();
+    
+          if (token) {
+    
+            await api.put(
+              "/notification-status",
+              { status: true },   // body data
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }
+              }
+            );
+    
+          }
+    
+        } catch (error) {
+          console.log("Notification setup error:", error);
+        }
+      };
+    
+      setupNotifications();
+    
+    }, []);
 
   return (
     <>
@@ -25,12 +58,6 @@ const My_Dashboard_Mentee = () => {
             <div className="DashboardArea">
 
                 <Upcoming_Session/>
-
-
-
-
-
-
 
                 <MentorSection />
 

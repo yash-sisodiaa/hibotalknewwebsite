@@ -10,7 +10,7 @@ const Footer = () => {
                     <div className="col-sm-4">
                         <div className="Foots">
                             <figure>
-                                <img src="/src/assets/images/Logo.png"/>
+                                <img src="/images/Logo.png"/>
                             </figure>
                             <h6>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h6>
                         </div>
@@ -41,11 +41,11 @@ const Footer = () => {
                     <div className="col-sm-2">
                         <div className="Foots Socail">
                             <h3>Contact Info</h3>
-                            <p><img src="/src/assets/images/Email.png"/> info@hibotalk.com</p>
+                            <p><img src="/images/Email.png"/> info@hibotalk.com</p>
                             <ul>
-                                <li><a href=""><img src="/src/assets/images/Socail-1.png"/> </a></li>
-                                <li><a href=""><img src="/src/assets/images/Socail-2.png"/> </a></li>
-                                <li><a href=""><img src="/src/assets/images/Socail-3.png"/> </a></li>
+                                <li><a href=""><img src="/images/Socail-1.png"/> </a></li>
+                                <li><a href=""><img src="/images/Socail-2.png"/> </a></li>
+                                <li><a href=""><img src="/images/Socail-3.png"/> </a></li>
                             </ul>
                         </div>
                     </div>

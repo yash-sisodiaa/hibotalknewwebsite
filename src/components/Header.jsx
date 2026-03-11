@@ -17,7 +17,7 @@ const Header = () => {
             <div className="container-fluid">
                 <nav className="navbar navbar-expand-md">
                     <Link className="navbar-brand" to="/">
-                        <img src="/src/assets/images/Logo.png"/>
+                        <img src="/images/Logo.png"/>
                     </Link>
 
                     <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar"
@@ -29,7 +29,7 @@ const Header = () => {
 
                     <div className="collapse navbar-collapse" id="navbar">
                         <Link className="MobileLogo" to="/">
-                            <img src="/src/assets/images/Logo.png"/>
+                            <img src="/images/Logo.png"/>
                         </Link>
                         <ul className="navbar-nav">
                             <li className={`nav-item ${isActive("/") ? "active" : ""}`}>

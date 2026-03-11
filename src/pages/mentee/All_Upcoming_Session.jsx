@@ -42,6 +42,29 @@ const toggleMenu = (id, e) => {
     }
   };
 
+
+  const handleStartSession = async (session) => {
+    
+  try {
+
+    const res = await api.put(
+      `/meeting/meetings?mentorId=${session.mentorId}&mentorJoined=true&sessionId=${session.id}&isNotification=true`
+    );
+
+    const meetingLink = res.data?.meeting?.meetingLink || res.data?.meetingLink;
+
+    if (meetingLink) {
+      window.open(meetingLink, "_blank");
+    } else {
+      alert("Meeting link not available");
+    }
+
+  } catch (error) {
+    console.error("Start session error:", error);
+    alert("Unable to start session");
+  }
+  };
+
   const cancelSession = async (sessionId) => {
 
     try {
@@ -149,8 +172,9 @@ const toggleMenu = (id, e) => {
                       </div>
                     </div>
                   )}
-
+                  <p>{session.mentor?.fullname}</p>
                   <ul>
+                    
                     <li>
                       <img src="/images/calendar.png" alt="" />
                       {session.localDate}
@@ -224,9 +248,42 @@ const toggleMenu = (id, e) => {
               <h4>Mentee’s Submitted Goals</h4>
               <p>{selectedSession.description}</p>
 
-              <button data-dismiss="modal">Join Session</button>
-              <button data-dismiss="modal">Start Chat</button>
-              <button data-dismiss="modal">Reschedule</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.$('#SessionsModal').modal('hide');
+                  handleStartSession(selectedSession);
+                }}
+              >
+                Join Session
+              </button>
+              
+              <button onClick={(e) => {
+                e.stopPropagation();
+                window.$('#SessionsModal').modal('hide');
+                navigate(`/chat-with-mentor/${selectedSession.mentorId}`, {
+                  state: {
+                    mentorName: selectedSession.mentor?.fullname,
+                  }
+                });
+              }}>Start Chat</button>
+              
+              <button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.$('#SessionsModal').modal('hide');
+                navigate("/resheduled-mentors", {
+                  state: {
+                    sessionId: selectedSession.id,
+                    mentorId: selectedSession.mentorId,
+                    localDate: selectedSession.localDate,
+                  },
+                });
+              }}
+            >
+              Reschedule
+            </button>
+
               
             </article>
           </div>

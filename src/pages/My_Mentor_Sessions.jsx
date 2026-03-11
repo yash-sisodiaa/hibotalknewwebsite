@@ -5,7 +5,7 @@ import Mentor_Sidebar from "../components/mentors/Mentor_Sidebar";
 import api from '../api/axiosInstance';
 
 const My_Mentor_Sessions = () => {
-  const today = dayjs();
+  const today = dayjs().startOf("day");
 
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedTimes, setSelectedTimes] = useState([]);
@@ -210,11 +210,13 @@ const handleAddSlot = async () => {
                   <div
                     key={index}
                     className={`calendar-day ${
-                      day && selectedDate.isSame(day, "day")
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => day && setSelectedDate(day)}
+                      day && selectedDate.isSame(day, "day") ? "active" : ""
+                      } ${day && day.isBefore(today, "day") ? "disabled" : ""}`}
+                    onClick={() => {
+                      if (day && !day.isBefore(today, "day")) {
+                        setSelectedDate(day);
+                      }
+                    }}
                   >
                     {day ? day.date() : ""}
                   </div>
@@ -225,43 +227,58 @@ const handleAddSlot = async () => {
               <h4>Select Time</h4>
 
               <ul>
-  {timeSlots.map((time) => {
-    const isBooked = bookedSlots.find(
-      (slot) => slot.mentorTime === time
-    );
-    const isActuallyBooked = isBooked?.isBooked === true;
-    
+ {timeSlots.map((time) => {
 
-    const isSelected = selectedTimes.includes(time);
+  const slot = bookedSlots.find(
+    (s) => s.mentorTime === time
+  );
 
-    return (
-      <li key={time}>
-        <input
-          type="checkbox"
-          disabled={isBooked}   
-          checked={isSelected}
-          onChange={() => handleTimeSelect(time, isBooked)}
-        />
+  const isAdded = !!slot;              // DB me exist karta hai?
+  const isBooked = slot?.isBooked;     // mentee ne book kiya?
+  const isSelected = selectedTimes.includes(time);
 
-        <div
-          className={`Check 
-            ${isBooked ? "already-booked" : ""} 
-            ${isSelected ? "new-selected" : ""}
-          `}
-        >
-          <span>{time}</span>
-          {isActuallyBooked && <small style={{color: "red", fontSize: "0.75em", display: "block"}}>Booked</small>}
-        </div>
-      </li>
-    );
-  })}
+  return (
+    <li key={time}>
+      <input
+        type="checkbox"
+        disabled={isBooked}   // sirf booked slot disable hoga
+        checked={isSelected}
+        onChange={() => handleTimeSelect(time, isBooked)}
+      />
+
+      <div
+        className={`Check 
+          ${isBooked ? "already-booked" : ""} 
+          ${isSelected ? "new-selected" : ""}
+        `}
+      >
+        <span>{time}</span>
+
+        {isBooked ? (
+          <small style={{ color: "red", display: "block" }}>
+            Booked
+          </small>
+        ) : isAdded ? (
+          <small style={{ color: "green", display: "block" }}>
+            Available
+          </small>
+        ) : (
+          <small style={{ color: "blue", display: "block" }}>
+            Add Slot
+          </small>
+        )}
+
+      </div>
+    </li>
+  );
+})}
 </ul>
 
 
 
              <button onClick={handleAddSlot}>
-  Add Slot
-</button>
+              Add Slot
+            </button>
 
             </div>
           </div>

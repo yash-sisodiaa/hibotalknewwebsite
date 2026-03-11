@@ -20,7 +20,7 @@ const Mentors = () => {
             <div  className="container-fluid">
                 <div  className="TitleBox"> 
                     <div  className="SearchBox">
-                        <span><img src=" /src/assets/images/search.png"/></span>
+                        <span><img src="/images/search.png"/></span>
                         <input type="text" placeholder="Search"/>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-1.png"/>
+                                <img src="/images/Inspires-1.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -46,7 +46,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-2.png"/>
+                                <img src="/images/Inspires-2.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -64,7 +64,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-3.png"/>
+                                <img src="/images/Inspires-3.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -82,7 +82,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-4.png"/>
+                                <img src="/images/Inspires-4.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -100,7 +100,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-1.png"/>
+                                <img src="/images/Inspires-1.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -118,7 +118,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-2.png"/>
+                                <img src="/images/Inspires-2.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -136,7 +136,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-3.png"/>
+                                <img src="/images/Inspires-3.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>
@@ -154,7 +154,7 @@ const Mentors = () => {
                     <div  className="col-xl-3 col-md-6 col-sm-6">
                         <div  className="InspiresBox">
                             <figure>
-                                <img src=" /src/assets/images/Inspires-4.png"/>
+                                <img src="/images/Inspires-4.png"/>
                             </figure>
                             <figcaption>
                                 <span  className="Rating">4 <i  className="fa fa-star" aria-hidden="true"></i> </span>

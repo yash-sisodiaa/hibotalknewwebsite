@@ -4,6 +4,9 @@ import api from '../../api/axiosInstance';
 import { Link } from 'react-router-dom';
 
 const MentorSection = () => {
+   
+   const user = JSON.parse(localStorage.getItem("user"));
+  const menteeId = user?.id;
 
     const [videos, setVideos] = useState([]);
     const [specializationsforvideos, setSpecializationsforvideos] = useState([]);
@@ -12,7 +15,8 @@ const MentorSection = () => {
     const fetchVideos = async (specialization_id) => {
   const token = localStorage.getItem('token');
   const res = await api.get(`/mentee/mentors`, {
-     params: { specialization_id },
+     params: { specialization_id,menteeId },
+     
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -59,6 +63,29 @@ useEffect(() => {
   fetchUservideos();
 }, []);
 
+const handleWishlistToggle = async (mentorId, isLiked) => {
+
+  try {
+    if (isLiked) {
+      await api.delete("/wishlist/remove",{
+        data: {
+          menteeId: menteeId,
+          mentorId: mentorId
+        }
+      });
+    }else {
+      
+      await api.post("/wishlist/add", {
+        menteeId: menteeId,
+        mentorId: mentorId
+      });
+    }
+    fetchVideos(activeSpecforvideo);
+  } catch (error) {
+    console.error("Wishlist error:", error);
+  }
+}
+
   return (
     <>
     
@@ -86,7 +113,19 @@ useEffect(() => {
                                   <Link to={`/my-mentor-details/${item.id}`} style={{ textDecoration: "none" }}>
                                   <div className="ResourcesBox">
                                     
-                                    <span className="Icon"><img src="src/assets/images/Heart.png" /> </span>
+                                    <span className="Icon">
+                                    <i
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleWishlistToggle(item.id, item.isLiked);
+                                      }}
+                                       className={`fa ${
+                                            item.isLiked ? "fa-heart text-danger" : "fa-heart-o"
+                                        }`}
+                                        aria-hidden="true"
+                                    ></i>
+                                  </span>
+
                                     <figure>
                                         <img src={item.profile_pic} />
                                     </figure>

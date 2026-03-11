@@ -11,12 +11,36 @@ const Reshedule_Mentor = () => {
      const mentorId = location.state?.mentorId;
      const sessionId = location.state?.sessionId;
      const localDate = location.state?.localDate;
+
+     console.log("Received mentorId:", mentorId);
+  console.log("Received sessionId:", sessionId);
+  console.log("Received localDate:", localDate);
     const today = dayjs().startOf("day");
+
+     const now = dayjs();
 
   
   const [selectedDate, setSelectedDate] = useState(localDate ? dayjs(localDate) : today);
   const [selectedTimes, setSelectedTimes] = useState(null);
   const [bookedSlots, setBookedSlots] = useState([]);
+
+  const filteredSlots = bookedSlots
+    // remove duplicate times first
+    .filter((slot, index, self) =>
+      index === self.findIndex(s => s.mentorTime === slot.mentorTime)
+    )
+    // remove past time if selectedDate is today
+    .filter(slot => {
+      const slotDateTime = dayjs(
+        `${selectedDate.format("YYYY-MM-DD")} ${slot.mentorTime}`
+      );
+  
+      if (selectedDate.isSame(today, "day")) {
+        return slotDateTime.isAfter(now);
+      }
+  
+      return true;
+    });
 
 
   const upcomingDays = useMemo(() => {
@@ -136,7 +160,7 @@ const handleResheduleSession = async () => {
     <div className="WrapperArea">
         <div className="WrapperBox">
           <div className="TitleBox">
-            <h3>Select day to Schedule</h3>
+            <h3>Reshedule Sessions</h3>
           </div>
 
           <div className="MontorArea">
@@ -220,7 +244,7 @@ const handleResheduleSession = async () => {
               <h4>Select Time</h4>
 
               <ul>
-  {bookedSlots.map((slot, index) => {
+  {filteredSlots.map((slot, index) => {
     const time = slot.mentorTime;
     const isActuallyBooked = slot.isBooked;
     const isSelected = selectedTimes.includes(time);
@@ -256,10 +280,6 @@ const handleResheduleSession = async () => {
     );
   })}
 </ul>
-
-
-
-
 
              <button onClick={handleResheduleSession}>
                   Send Reschedule request

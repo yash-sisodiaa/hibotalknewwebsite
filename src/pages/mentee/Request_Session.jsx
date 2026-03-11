@@ -11,11 +11,30 @@ const Request_Session = () => {
 
      console.log("Received mentorId:", mentorId);
     const today = dayjs().startOf("day");
+    const now = dayjs();
 
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedTimes, setSelectedTimes] = useState(null);
   const [bookedSlots, setBookedSlots] = useState([]);
+
+  const filteredSlots = bookedSlots
+    // remove duplicate times first
+    .filter((slot, index, self) =>
+      index === self.findIndex(s => s.mentorTime === slot.mentorTime)
+    )
+    // remove past time if selectedDate is today
+    .filter(slot => {
+      const slotDateTime = dayjs(
+        `${selectedDate.format("YYYY-MM-DD")} ${slot.mentorTime}`
+      );
+  
+      if (selectedDate.isSame(today, "day")) {
+        return slotDateTime.isAfter(now);
+      }
+  
+      return true;
+    });
 
 
   const upcomingDays = useMemo(() => {
@@ -226,7 +245,7 @@ const handleRequestSession = async () => {
               <h4>Select Time</h4>
 
               <ul>
-  {bookedSlots.map((slot, index) => {
+  {filteredSlots.map((slot, index) => {
     const time = slot.mentorTime;
     const isActuallyBooked = slot.isBooked;
     const isSelected = selectedTimes.includes(time);

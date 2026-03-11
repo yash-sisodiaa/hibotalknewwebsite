@@ -13,6 +13,7 @@ html {
 } 
  
 body {
+    
     margin: 0;
     padding: 0;
      font-family: "Inter", sans-serif !important;
@@ -214,7 +215,11 @@ header{ position:sticky; top:0; z-index:10 }
 .ProgramArea .ProgramBody .owl-dots .owl-dot.active{width:30px;background-color:#2D313A}
 
 .ProgramBox{background-color:#2D313A;border-radius:10px;overflow:hidden;margin:0 0 30px 0}
-.ProgramBox figure{margin:0}
+.ProgramBox figure {
+    margin: 0;
+    height: 215px;
+    overflow: hidden;
+}
 .ProgramBox figure .PDF{position:absolute;top:15px;left:15px;max-width:30px}
 .ProgramBox figure .Fav{position:absolute;right:15px;top:15px;font-size:22px;color:#FFF}
 .ProgramBox figure .Fav.active{color:#20B4AB}
@@ -237,7 +242,11 @@ header{ position:sticky; top:0; z-index:10 }
 
 
 .InspiresBox{margin:0 0 30px 0;background-color:#2D313A;border-radius:15px;overflow:hidden}
-.InspiresBox figure{margin:0}
+.InspiresBox figure {
+    margin: 0;
+    height: 300px;
+    overflow: hidden;
+}
 .InspiresBox figure img{width:100%}
 .InspiresBox figcaption{padding:15px;color:#fff}
 .InspiresBox figcaption .Rating{float:right;font-size:25px;font-weight:600;font-family:'Roboto';display:inline-flex;align-items:center;gap:4px;line-height:20px;margin:3px 0 0 0}
@@ -261,7 +270,16 @@ header{ position:sticky; top:0; z-index:10 }
 .TestimonialBox article i{color:#20B4AB;font-size:20px;margin:0 5px 0 0}
 .TestimonialBox article p{font-size:16px;margin:15px 0 0 0}
 .TestimonialBox aside{padding:0 0 0 65px;min-height:50px}
-.TestimonialBox aside .Icon{position:absolute;top:0;left:0;width:50px;height:50px}
+.TestimonialBox aside .Icon {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    border-radius: 50%;
+}
+ 
 .TestimonialBox aside h3{font-size:18px;font-weight:600;margin:0 0 3px 0}
 .TestimonialBox aside p{font-size:13px}
 
@@ -395,7 +413,32 @@ footer .Copyright p{color:#fff;font-size:15px}
 .Navigation ul .profile .dropdown-menu li a .Icon img{max-height:25px}
 .Navigation ul .Circle{width: 33px;height: 33px;display:flex;background-color:#fff;border-radius:50px;align-items:center;justify-content:center;position:relative}
 .Navigation ul .Circle .Icon{display:block;max-width: 20px;}
-.Navigation ul .Circle .Badge{position:absolute;width: 9px;height: 9px;background-color:#FF0F0F;border-radius:10px;top: 5px;right: 5px;border:2px solid #fff}
+.Navigation ul .Circle {
+  position: relative;
+}
+
+.Navigation ul .Circle .Badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+
+  background-color: #FF0F0F;
+  color: #fff;
+
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #fff;
+}
 .Navigation ul .notification .dropdown-menu{min-width:400px;/* left:auto!important; *//* right:0!important; */border:1px solid #DEDEDE;box-shadow:0 4px 4px 0 #0000000A;background-color:#313642;padding:0;border-radius:10px;/* top:50px!important; *//* transform:inherit!important; */}
 .Navigation ul .notification .dropdown-menu article{color:#fff;padding:15px 20px}
 .Navigation ul .notification .dropdown-menu article+article{border-top:1px solid #E5E5E5}
@@ -447,7 +490,10 @@ footer .Copyright p{color:#fff;font-size:15px}
 .ResourcesBox{border-radius:10px;overflow:hidden;position:relative;margin: 0 0 30px 0;cursor: pointer;}
 .ResourcesBox .Chip{position:absolute;z-index:9;background-color:#5EE9DB;padding:7px 15px;border-radius:10px 0 10px 0;font-weight:500;color:#042E2F;font-size: 12px;}
 .ResourcesBox .Icon{position:absolute;right: 7px;top: 7px;z-index:9;max-width: 20px;}
-.ResourcesBox figure{margin:0}
+.ResourcesBox figure {
+    height: 125px;
+    overflow: hidden;
+}
 .ResourcesBox figure:after{content:'';background:linear-gradient(180deg,#fff0 27.85%,#0F7674 81.96%);position:absolute;top:0;left:0;width:100%;height:100%}
 .ResourcesBox figcaption{position:absolute;z-index:9;bottom:0;left:0;width:100%;padding: 10px 15px;}
 .ResourcesBox figcaption p{color:#fff;font-size: 15px;font-weight:600;letter-spacing: .4px;}
@@ -592,7 +638,7 @@ footer .Copyright p{color:#fff;font-size:15px}
 .ChatArea .ChatRight .ChatBody ul li{margin-bottom:20px}
 .ChatArea .ChatRight .ChatBody .Message{padding:20px;border-radius:10px;max-width:500px}
 .ChatArea .ChatRight .ChatBody .Message p{font-size:16px;color:#1E2226;font-weight:400}
-.ChatArea .ChatRight .ChatBody .Message .Time{float:right;margin:-10px -10px 0 0}
+.ChatArea .ChatRight .ChatBody .Message .Time{float:right;margin:-23px -8px 0 0}
 .ChatArea .ChatRight .ChatBody .MyMessage .Message{background-color:#98F5E8;margin-left:auto}
 .ChatArea .ChatRight .ChatBody .MyMessage .Message .Time{color:#28C2B7}
 .ChatArea .ChatRight .ChatBody .OtherMessage .Message{background-color:#EFFCFA}
@@ -600,14 +646,62 @@ footer .Copyright p{color:#fff;font-size:15px}
 .ChatArea .ChatRight .ChatFooter{width:calc(100% - 35px);border:1px solid #20B4AB;display:flex;align-items:center;border-radius:50px;margin:auto;padding:12px 20px;gap:10px}
 .ChatArea .ChatRight .ChatFooter button{border:none;background-color:#fff0;width:26px}
 .ChatArea .ChatRight .ChatFooter input{width:100%;border:none;outline:0;box-shadow:none;font-size:15px;font-weight:400}
+.Switch{
+position:relative;
+display:inline-block;
+cursor:pointer;
+margin:0;
+padding:0px 55px 0px 0px;
+font-weight:500;
+font-size:16px;
+color:#000000;
+float:right;
+min-width:285px;
+min-height:30px;
+text-align:right;
+}
 
-.Switch{position:relative;display:inline-block;cursor:pointer;margin:0;padding: 0px 55px 0px 0px;font-weight: 500;font-size: 16px;color: #000000;float: right;min-width: 285px;min-height: 30px;text-align: right;}
-.Switch input{opacity:0;width:0;height:0}
-.Switch .Slider{position:absolute;cursor:pointer;top:0;right: 0;right:0;bottom:0;-webkit-transition:0.4s;transition:0.4s;height: 30px;border-radius:50px;width: 50px;min-width: auto;background: linear-gradient(360deg, #0D938E 0%, #28C2B7 73.21%);}
-.Switch .Slider:before{position:absolute;content:"";height: 23px;width: 23px;left: 4px;bottom:0;top:0;background: #ffffff;-webkit-transition:0.4s;transition:0.4s;border-radius:50%;margin:auto;transform: translateX(19px);}
-.Switch input:checked+.Slider{background: #919399;}
-.Switch input:checked+.Slider:before{-webkit-transform:translateX(19px);transform: translateX(0px);background: #ffffff;}
+.Switch input{
+opacity:0;
+width:0;
+height:0;
+}
 
+.Switch .Slider{
+position:absolute;
+cursor:pointer;
+top:0;
+right:0;
+bottom:0;
+transition:0.4s;
+height:30px;
+width:50px;
+border-radius:50px;
+background:#919399;
+}
+
+.Switch .Slider:before{
+position:absolute;
+content:"";
+height:23px;
+width:23px;
+left:4px;
+top:0;
+bottom:0;
+margin:auto;
+background:#ffffff;
+border-radius:50%;
+transition:0.4s;
+transform:translateX(0); /* default OFF */
+}
+
+.Switch input:checked + .Slider{
+background:linear-gradient(360deg,#0D938E 0%,#28C2B7 73.21%);
+}
+
+.Switch input:checked + .Slider:before{
+transform:translateX(19px); /* ON position */
+}
 .MontorArea .MontorInfo h4{margin: 0 0 15px 0;font-weight: 600;font-size: 18px;color: #000;}
 .MontorArea .MontorInfo .form-group{position:relative;margin:0 0 20px 0}
 .MontorArea .MontorInfo .form-group label{display: block;color: #042E2F;font-size: 15px;font-weight: 500;margin: 0 0 10px 0;}
@@ -783,6 +877,7 @@ footer .Copyright p{color:#fff;font-size:15px}
 .LoginBox.Profile{max-width:max-content;padding:20px}
 .LoginBox.Profile .ProfileInfo{text-align:center;margin:0 0 30px 0}
 .LoginBox.Profile .ProfileInfo span{display:inline-block;width:125px;height:125px;border-radius:50%;overflow:hidden}
+/* .LoginBox.Profile .ProfileInfo span{display:flex;width:150px;height:116px;border-radius:50%;overflow:auto} */
 .LoginBox.Profile .ProfileInfo h4{font-size:26px;font-weight:500;color:#000;margin:10px 0 10px 0}
 .LoginBox.Profile .ProfileInfo h6{font-size:18px;color:#000;padding:0 0 10px 0;margin:0 0 15px 0;position:relative}
 .LoginBox.Profile .ProfileInfo h6:after{content:'';background:#8D8D8D;height:1px;position:absolute;bottom:0;left:0;right:0;margin:auto;width:100px}
@@ -831,6 +926,12 @@ footer .Copyright p{color:#fff;font-size:15px}
   font-size: 64px;
   color: #fb8c00;
 }
+
+.DocIcon {
+  font-size: 64px;
+  color: #1976d2;
+}
+
 
 .ResourceTypeBox {
   display: flex;
@@ -942,4 +1043,122 @@ footer .Copyright p{color:#fff;font-size:15px}
   color: #ccc;
   pointer-events: none;
   
+}
+
+
+.camera-icon {
+  position: absolute;
+  bottom: 5px;   
+  right: 5px;   
+  background: #000;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.new {
+      margin: 95%;
+}
+
+.form-control {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: none !important;
+}
+
+.fullWidthChat {
+  display: flex;
+  height: 100%;
+}
+
+.fullWidthChat .ChatRight {
+  width: 100% !important;
+  flex: 1;
+}
+
+.DateSeparator {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 13px;
+  background: #d9d9d9;
+  display: inline-block;
+  padding: 6px 15px;
+  border-radius: 20px;
+}
+
+.ChatBody {
+  height: 500px; /* ya jo bhi */
+  overflow-y: auto;
+}
+
+.Tick {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.Tick.seen {
+  color: #4fc3f7;
+}
+
+.form-check-input {
+  margin-left: 0 !important;
+}
+
+.Language .dropdown-menu{
+  min-width:120px;
+  padding:5px 0;
+}
+
+.Language .dropdown-item{
+  cursor:pointer;
+}
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+
+.skiptranslate iframe {
+  display: none !important;
+}
+
+/* hide google translate tooltip */
+.goog-tooltip {
+  display: none !important;
+}
+
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+/* hide highlight */
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* hide translate popup */
+#goog-gt-tt {
+  display: none !important;
+}
+
+.goog-te-balloon-frame {
+  display: none !important;
 }

@@ -4,11 +4,16 @@ import { Link } from 'react-router-dom';
 import api from '../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
+import { getFcmToken } from "../utils/getFcmToken";
 
 
 const AuthModals = () => {
-    
+
+
+  ///////////////token for notification //////////
+ 
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -16,6 +21,10 @@ const AuthModals = () => {
     const [specializations, setSpecializations] = useState([]);
     const [preview, setPreview] = useState(null);
     const [selectedRole, setSelectedRole] = useState('mentor');
+    
+const [rememberMe, setRememberMe] = useState(false);
+
+
 
 //     useEffect(() => {
 //   // Bootstrap ke 'hidden.bs.modal' event pe suno (jab modal fully hide ho jata hai)
@@ -68,8 +77,44 @@ const AuthModals = () => {
 
 const [loginForm, setLoginForm] = useState({
     email: '',
-    password:''
+    password:'',
 })
+
+useEffect(() => {
+
+  const savedEmail = localStorage.getItem("rememberEmail");
+  const savedPassword = localStorage.getItem("rememberPassword");
+  const savedRole = localStorage.getItem("rememberRole");
+
+  if (savedEmail && savedPassword) {
+
+    setLoginForm({
+      email: savedEmail,
+      password: savedPassword
+    });
+
+    setRememberMe(true);
+
+    if(savedRole){
+      setSelectedRole(savedRole);
+    }
+
+  }
+
+}, []);
+
+useEffect(() => {
+
+  const mentorTab = document.querySelector('a[href="#Mentor"]');
+  const menteeTab = document.querySelector('a[href="#Mentee"]');
+
+  if (selectedRole === "mentee") {
+    menteeTab?.click();
+  } else {
+    mentorTab?.click();
+  }
+
+}, [selectedRole]);
 
 useEffect(() => {
   const fetchSpecializations = async () => {
@@ -398,11 +443,12 @@ const handleRegister = async () => {
   }
 });
 
+   const token = await getFcmToken();
 
     // 🔹 Important fields for backend
     formData.append('original_type', form.user_type);
     formData.append('platform', 'android');
-    
+    formData.append('fcmToken', token);
 
     const res = await api.post('/signup', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
@@ -637,15 +683,20 @@ const googleLoginMain = useGoogleLogin({
 
 
 const handleLogin = async () => {
+
+
   if (!loginForm.email || !loginForm.password) {
     alert('Email and password are required');
     return;
   }
 
+   const token = await getFcmToken();
+
   const payload = {
     email: loginForm.email,
     password: loginForm.password,
-    original_type: selectedRole
+    original_type: selectedRole,
+    fcmToken: token
   };
 
   console.log('LOGIN PAYLOAD 👉', payload);
@@ -655,8 +706,23 @@ const handleLogin = async () => {
 
     console.log('LOGIN RESPONSE 👉', res.data);
 
+     if (res.data.success) {
+
+    if (rememberMe) {
+  localStorage.setItem("rememberEmail", loginForm.email);
+  localStorage.setItem("rememberPassword", loginForm.password);
+  localStorage.setItem("rememberRole", selectedRole);
+} else {
+  localStorage.removeItem("rememberEmail");
+  localStorage.removeItem("rememberPassword");
+  localStorage.removeItem("rememberRole");
+}
+
+  }
+
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('user', JSON.stringify(res.data.user));
+    
 
      window.$('#LoginModal').modal('hide');
 
@@ -778,9 +844,18 @@ const handleLogin = async () => {
 
                                     <div className="form-group">
                                         <span className="Icon"><img src="/images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
+                                        <span
+                                        className="Icon Eye"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        style={{ cursor: "pointer" }}
+                                      >
+                                        <img
+                                          src={showPassword ? "/images/lock.png" : "/images/eye.png"}
+                                          alt="toggle password"
+                                        />
+                                      </span>
 
-                                        <input type="email" className="form-control" placeholder="Enter your Password" name="password"  value={loginForm.password} onChange={handleLoginChange} />
+                                        <input type={showPassword ? "text" : "password"} className="form-control" placeholder="Enter your Password" name="password"  value={loginForm.password} onChange={handleLoginChange} />
                                     </div>
 
                                     <div className="forgot">
@@ -791,10 +866,15 @@ const handleLogin = async () => {
                                     </div>
 
                                     <div className="Remember">
-                                        <label className="CheckBox">Remember Me
-                                            <input type="checkbox" />
+                                        <label className="CheckBox">
+                                            Remember Me
+                                            <input
+                                              type="checkbox"
+                                              checked={rememberMe}
+                                              onChange={(e) => setRememberMe(e.target.checked)}
+                                            />
                                             <span className="checkmark"></span>
-                                        </label>
+                                          </label>
                                     </div>
 
                                     <button className="myButton" onClick={handleLogin}>Log in</button>
@@ -814,11 +894,20 @@ const handleLogin = async () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <span className="Icon"><img src=" /images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
+                                        <span className="Icon"><img src="/images/lock.png" /> </span>
+                                        <span
+                                        className="Icon Eye"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        style={{ cursor: "pointer" }}
+                                      >
+                                        <img
+                                          src={showPassword ? "/images/lock.png" : "/images/eye.png"}
+                                          alt="toggle password"
+                                        />
+                                      </span>
 
                                         <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         className="form-control"
                                         placeholder="Enter your Password"
                                         name="password"
@@ -835,10 +924,15 @@ const handleLogin = async () => {
                                     </div>
 
                                     <div className="Remember">
-                                        <label className="CheckBox">Remember Me
-                                            <input type="checkbox" />
+                                        <label className="CheckBox">
+                                            Remember Me
+                                            <input
+                                              type="checkbox"
+                                              checked={rememberMe}
+                                              onChange={(e) => setRememberMe(e.target.checked)}
+                                            />
                                             <span className="checkmark"></span>
-                                        </label>
+                                          </label>
                                     </div>
 
                                     <button className="myButton" onClick={handleLogin}>Log in</button>
@@ -1027,15 +1121,33 @@ const handleLogin = async () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <span className="Icon"><img src=" /images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
-                                        <input type="password" className="form-control" placeholder="Create a strong password" value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} />
+                                        <span className="Icon"><img src="/images/lock.png" /> </span>
+                                        <span
+                                          className="Icon Eye"
+                                          onClick={() => setShowPassword(!showPassword)}
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <img
+                                            src={showPassword ? "/images/eye.png":"/images/lock.png"} 
+                                            alt="toggle password"
+                                          />
+                                        </span>
+                                        <input type={showPassword ? "text" : "password"} className="form-control" placeholder="Create a strong password" value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} />
                                     </div>
 
                                     <div className="form-group">
                                         <span className="Icon"><img src=" /images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
-                                        <input type="password" className="form-control"
+                                        <span
+                                          className="Icon Eye"
+                                          onClick={() => setShowPassword(!showPassword)}
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <img
+                                            src={showPassword ? "/images/eye.png":"/images/lock.png"} 
+                                            alt="toggle password"
+                                          />
+                                        </span>
+                                        <input type={showPassword ? "text" : "password"} className="form-control"
                                             placeholder="Enter your password again" value={form.confirmPassword} onChange={(e) => setForm({...form, confirmPassword: e.target.value})} />
                                     </div>
                                     <button onClick={handleCheckUser}>Register</button>
@@ -1053,15 +1165,47 @@ const handleLogin = async () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <span className="Icon"><img src=" /images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
-                                        <input type="password" className="form-control" placeholder="Create a strong password" value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} />
+  
+                                      <span className="Icon">
+                                        <img src="/images/lock.png" />
+                                      </span>
+
+                                      <span
+                                        className="Icon Eye"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        style={{ cursor: "pointer" }}
+                                      >
+                                        <img
+                                          src={showPassword ? "/images/eye-off.png" : "/images/eye.png"}
+                                          alt="toggle password"
+                                        />
+                                      </span>
+
+                                      <input
+                                        type={showPassword ? "text" : "password"}
+                                        className="form-control"
+                                        placeholder="Create a strong password"
+                                        value={form.password}
+                                        onChange={(e) =>
+                                          setForm({ ...form, password: e.target.value })
+                                        }
+                                      />
+
                                     </div>
 
                                     <div className="form-group">
                                         <span className="Icon"><img src=" /images/lock.png" /> </span>
-                                        <span className="Icon Eye"><img src=" /images/eye.png" /> </span>
-                                        <input type="password" className="form-control"
+                                        <span
+                                          className="Icon Eye"
+                                          onClick={() => setShowPassword(!showPassword)}
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <img
+                                            src={showPassword ? "/images/eye-off.png" : "/images/eye.png"}
+                                            alt="toggle password"
+                                          />
+                                        </span>
+                                        <input type={showPassword ? "text" : "password"} className="form-control"
                                             placeholder="Enter your password again" value={form.confirmPassword} onChange={(e) => setForm({...form, confirmPassword: e.target.value})} />
                                     </div>
 

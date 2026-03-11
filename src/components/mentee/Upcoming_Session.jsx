@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axiosInstance';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Upcoming_Session = () => {
+  const navigate = useNavigate();
 
   const [sessions, setSessions] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
@@ -31,6 +33,29 @@ const Upcoming_Session = () => {
     }
   };
 
+
+  const handleStartSession = async (session) => {
+    
+  try {
+
+    const res = await api.put(
+      `/meeting/meetings?mentorId=${session.mentorId}&mentorJoined=true&sessionId=${session.id}&isNotification=true`
+    );
+
+    const meetingLink = res.data?.meeting?.meetingLink || res.data?.meetingLink;
+
+    if (meetingLink) {
+      window.open(meetingLink, "_blank");
+    } else {
+      alert("Meeting link not available");
+    }
+
+  } catch (error) {
+    console.error("Start session error:", error);
+    alert("Unable to start session");
+  }
+  };
+
   return (
     <>
       <div className="HistoryArea">
@@ -48,7 +73,10 @@ const Upcoming_Session = () => {
                   style={{ cursor: "pointer" }}
                   onClick={() => openModal(session)}
                   >
+                    {/* <p>{session.mentor?.fullname}</p> */}
+                        
                     <ul>
+                      
                       <li>
                         <img src="/images/calendar.png" alt="" /> 
                         {session.localDate}
@@ -122,9 +150,40 @@ const Upcoming_Session = () => {
               <h4>Mentee’s Submitted Goals</h4>
               <p>{selectedSession.description}</p>
 
-              <button data-dismiss="modal">Join Session</button>
-              <button data-dismiss="modal">Start Chat</button>
-              <button data-dismiss="modal">Reschedule</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.$('#SessionsModal').modal('hide');
+                  handleStartSession(selectedSession);
+                }}
+              >
+                Join Session
+              </button>
+              
+              <button onClick={(e) => {
+                e.stopPropagation();
+                window.$('#SessionsModal').modal('hide');
+                navigate(`/chat-with-mentor/${selectedSession.mentorId}`, {
+                  state: {
+                    mentorName: selectedSession.mentor?.fullname,
+                  }
+                });
+              }}>Start Chat</button>
+              <button
+              onClick={(e) => {
+                e.stopPropagation();
+                window.$('#SessionsModal').modal('hide');
+                navigate("/resheduled-mentors", {
+                  state: {
+                    sessionId: selectedSession.id,
+                    mentorId: selectedSession.mentorId,
+                    localDate: selectedSession.localDate,
+                  },
+                });
+              }}
+            >
+              Reschedule
+            </button>
               
             </article>
           </div>

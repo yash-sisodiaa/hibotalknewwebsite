@@ -175,14 +175,14 @@ const renderStars = (rating) => {
                                     </span>
 
                                     <img
-                                        src={item.thumbnailUrl || '/src/assets/images/Program-1.png'}
+                                        src={item.thumbnailUrl || '/images/Program-1.png'}
                                         alt={item.heading}
                                     />
                                     </>
                                 )}
 
-                                {/* PDF / PPT – CUSTOM ICON */}
-                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt') && (
+                                {/* PDF / PPT / DOC – CUSTOM ICON */}
+                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
                                 <div className="OnlyIcon">
                                     {item.resourceType === 'pdf' && (
                                     <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
@@ -190,6 +190,10 @@ const renderStars = (rating) => {
 
                                     {item.resourceType === 'ppt' && (
                                     <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
+                                    )}
+
+                                    {item.resourceType === 'doc' && (
+                                    <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
                                     )}
                                 </div>
                                 )}

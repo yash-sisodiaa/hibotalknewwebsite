@@ -27,7 +27,7 @@ const ResourceSection = () => {
         }
       });
 
-      console.log('USER DATA', res.data.data);
+      //console.log('USER DATA', res.data.data);
 
       const specs = res.data.data.specializations || [];
       setSpecializations(specs);
@@ -58,8 +58,11 @@ const fetchResources = async (categoryId) => {
       }
     });
 
-    console.log('RESOURCES 👉', res.data.data);
-    setResources(res.data.data || []);
+    //console.log('RESOURCES 👉', res.data.data);
+    const filtered = (res.data.data || []).filter(
+  (item) => item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc'
+   );
+    setResources(filtered);
 
   } catch (err) {
     console.error(
@@ -100,27 +103,25 @@ useEffect(() => {
                                  onClick={()=> Navigate(`/resource-mentor-details/${item.id}`)}
                                   style={{ cursor: "pointer" }}
                                 >    
-                                <span className="Icon">
-                                    <img src="/src/assets/images/Heart.png" />
-                                </span>
+                                
 
                                 <figure>
                                 {/* VIDEO */}
-                                {item.resourceType === 'video' && (
+                                {/* {item.resourceType === 'video' && (
                                     <>
                                     <span className="Play">
                                         <i className="fa fa-play" aria-hidden="true"></i>
                                     </span>
 
                                     <img
-                                        src={item.thumbnailUrl || '/src/assets/images/Program-1.png'}
+                                        src={item.thumbnailUrl || '/images/Program-1.png'}
                                         alt={item.heading}
                                     />
                                     </>
-                                )}
+                                )} */}
 
                                 {/* PDF / PPT – CUSTOM ICON */}
-                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt') && (
+                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
                                 <div className="OnlyIcon">
                                     {item.resourceType === 'pdf' && (
                                     <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
@@ -128,6 +129,10 @@ useEffect(() => {
 
                                     {item.resourceType === 'ppt' && (
                                     <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
+                                    )}
+
+                                    {item.resourceType === 'doc' && (
+                                      <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
                                     )}
                                 </div>
                                 )}

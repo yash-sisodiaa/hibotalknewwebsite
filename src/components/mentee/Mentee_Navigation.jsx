@@ -1,101 +1,303 @@
-import React from 'react'
+import React, { useState,useEffect, use } from "react";
+import { useNavigate } from "react-router-dom";
+import api from '../../api/axiosInstance';
+
 
 const Mentee_Navigation = () => {
+
+  
+
+  const changeLanguage = (language) => {
+
+  if (language === "en") {
+    document.cookie = "googtrans=/en/en;path=/";
+    window.location.reload();
+    return;
+  }
+
+  const select = document.querySelector(".goog-te-combo");
+
+  if (select) {
+    select.value = language;
+    select.dispatchEvent(new Event("change"));
+  }
+
+  setLang(language);
+};
+
+
+  const [lang, setLang] = useState("en");
+  const [openLang,setOpenLang] = useState(false);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+  const [showNotification, setShowNotification] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const navigate = useNavigate();
+
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const name = user?.fullname || "User";
+
+      ////////////////for chat notification/////////
+      const [unreadRoomsCount, setUnreadRoomsCount] = useState(0);
+      const userId = JSON.parse(localStorage.getItem("user"))?.id;
+
+    useEffect(() => {
+      const fetchRooms = async () => {
+        try {
+          const res = await api.get(`/chat/rooms?userId=${userId}`);
+          const rooms = res.data.rooms || [];
+
+          const count = rooms.filter(
+            (room) => room.unreadCount > 0
+          ).length;
+
+          setUnreadRoomsCount(count);
+
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      fetchRooms();
+    },[])
+
+    ////////////////for notification count/////////
+
+    useEffect(() => {
+  const fetchNotifications = async () => {
+    try {
+      const res = await api.get(`/mentee/get-notification/${userId}`);
+      const notifications = res.data.notifications || [];
+
+      const lastSeen = localStorage.getItem("notification_last_seen");
+
+      if (!lastSeen) {
+        setUnreadNotificationCount(notifications.length);
+        return;
+      }
+
+      const unread = notifications.filter((n) => {
+        return new Date(n.createdAt) > new Date(lastSeen);
+      });
+
+      setUnreadNotificationCount(unread.length);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchNotifications();
+}, []);
+
+////////////////Logout function//////////
+const handleLogout = async () => {
+  try {
+
+    await api.post("/logout", {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+
+    navigate("/");
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+////////////////dlt account/////////
+const handleDeleteAccount = async () => {
+
+  const confirmDelete = window.confirm("Are you sure you want to delete your account?");
+
+  if (!confirmDelete) {
+    return; 
+  }
+
+  try {
+
+    const res = await api.delete(`/delete-user/${user.id}`);
+
+    if (res.data.status) {
+      alert("Account deleted successfully");
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      navigate("/"); 
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
+  }
+
+};
+
   return (
-    <>
     <div className="Navigation">
-        <div className="NaviToggle">
-            <button>
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-        <ul>
-            <li>
-                <a href="my-chat.html" className="Circle">
-                    <span className="Icon"><img src="/src/assets/images/Chat.png" /> </span>
-                    <span className="Badge"></span>
-                </a>
-            </li>
-            
-            <li className="dropdown notification">
-                <a href="javascript:void(0)" id="navbardrop" className="Circle" data-toggle="dropdown" aria-expanded="false">
-                    <span className="Icon"><img src="/src/assets/images/notifications.png" /> </span>
-                    <span className="Badge"></span>
-                </a>
-                <div className="dropdown-menu">
-                    <article>
-                        <h4>Notifications</h4>
-                    </article>
-                    <article>
-                        <ol>
-                            <li>
-                                <span className="Time">2 hours ago</span>
-                                <h6>Session Confirmed!</h6>
-                                <p>Your 30 Minute one to one session with Ms. Jenny Lopez has been scheduled. Click to view details.</p>
-                            </li>
-                            <li>
-                                <span className="Time">2 hours ago</span>
-                                <h6>Session Confirmed!</h6>
-                                <p>Your 30 Minute one to one session with Ms. Jenny Lopez has been scheduled. Click to view details.</p>
-                            </li>
-                            <li>
-                                <span className="Time">2 hours ago</span>
-                                <h6>Session Confirmed!</h6>
-                                <p>Your 30 Minute one to one session with Ms. Jenny Lopez has been scheduled. Click to view details.</p>
-                            </li>
-                            <li>
-                                <a href="my-notification.html">View all</a>
-                            </li>
-                        </ol>
-                    </article>
-                </div>
-            </li>
+      <div className="NaviToggle">
+        <button>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-            <li className="Language">
-                <a href="javascript:void(0)">
-                    <span className="Icon"><img src="/src/assets/images/Flag.png" /> </span>
-                    <span className="Text">Eng</span>
-                </a>
-            </li>
-            
-            <li className="dropdown profile">
-                <a href="javascript:void(0)" id="navbardrop" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span className="Icon"><img src="/src/assets/images/account.png" /> </span> 
-                    <span className="Text">Sahil Wason</span>
-                </a>
-                <ol className="dropdown-menu">
-                    <li>
-                        <a href="my-profile.html">
-                            <span className="Icon"><img src="/src/assets/images/account-1.png" /> </span> 
-                            <span className="Text">Profile</span>
-                        </a>
-                    </li> 
-                    <li>
-                        <a href="my-community-save.html">
-                            <span className="Icon"><img src="/src/assets/images/account-2.png" /> </span> 
-                            <span className="Text">Community</span>
-                        </a>
-                    </li> 
-                    <li>
-                        <a href="my-help.html">
-                            <span className="Icon"><img src="/src/assets/images/account-3.png" /> </span> 
-                            <span className="Text">Help Center</span>
-                        </a>
-                    </li> 
-                    <li>
-                        <a href="index.html">
-                            <span className="Icon"><img src="/src/assets/images/account-4.png" /> </span> 
-                            <span className="Text">Sign out</span>
-                        </a>
-                    </li>  
-                </ol>
-            </li>
-        </ul>
+      <ul>
+        <li>
+          <a
+            onClick={() => navigate("/all-chats-mentee")}
+            className="Circle"
+            style={{ cursor: "pointer" }}
+          >
+            <span className="Icon">
+              <img src="/images/Chat.png" alt="" />
+            </span>
+            {unreadRoomsCount > 0 && (
+              <span className="Badge">
+                {unreadRoomsCount}
+              </span>
+            )}
+          </a>
+        </li>
+
+        {/* Notification */}
+        <li className={`dropdown notification ${showNotification ? "show" : ""}`}>
+          <a
+            onClick={() => {
+              navigate("/my-notifications-mentee");
+              setShowNotification(!showNotification);
+              setShowProfile(false);
+            }}
+            className="Circle"
+            style={{ cursor: "pointer" }}
+          >
+            <span className="Icon">
+              <img src="/images/notifications.png" alt="" />
+            </span>
+            {unreadNotificationCount > 0 && (
+              <span className="Badge">
+                {unreadNotificationCount}
+              </span>
+            )}
+          </a>
+
+        </li>
+
+         <li className="Language dropdown">
+  <a
+    style={{ cursor: "pointer" }}
+    onClick={() => setOpenLang(!openLang)}
+  >
+    <span className="Icon">
+      <img src={lang === "fr" ? "images/fr.png" : "images/Flag.png"} alt="" />
+    </span>
+    <span className="Text">{lang === "fr" ? "Fr" : "Eng"}</span>
+  </a>
+
+  {openLang && (
+    <div className="dropdown-menu show">
+
+      {lang === "en" ? (
+        <button
+          className="dropdown-item"
+          onClick={() => {
+            changeLanguage("fr");
+            setOpenLang(false);
+          }}
+        >
+          French
+        </button>
+      ) : (
+        <button
+          className="dropdown-item"
+          onClick={() => {
+            changeLanguage("en");
+            setOpenLang(false);
+          }}
+        >
+          English
+        </button>
+      )}
+
     </div>
-    </>
-  )
-}
+  )}
+</li>
 
-export default Mentee_Navigation
+        {/* Profile */}
+        <li className={`dropdown profile ${showProfile ? "show" : ""}`}>
+          <a
+            className="dropdown-toggle"
+            onClick={() => {
+              setShowProfile(!showProfile);
+              setShowNotification(false);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <span className="Icon">
+              <img src={user?.profile_pic || "images/default-profile.png"} alt="Profile" />
+            </span>
+            <span className="Text">{name}</span>
+          </a>
+
+          <ol className={`dropdown-menu ${showProfile ? "show" : ""}`}>
+            <li>
+              <a onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
+                <span className="Icon">
+                  <img src="images/account-1.png" alt="" />
+                </span>
+                <span className="Text">Profile</span>
+              </a>
+            </li>
+            {/* <li>
+              <a onClick={() => navigate("/terms-and-conditions")} style={{ cursor: "pointer" }}>
+                <span className="Icon">
+                  <img src="images/account-2.png" alt="" />
+                </span>
+                <span className="Text">Terms and Conditions</span>
+              </a>
+            </li> */}
+            {/* <li>
+              <a onClick={() => navigate("/privacy-policy")} style={{ cursor: "pointer" }}>
+                <span className="Icon">
+                  <img src="images/account-2.png" alt="" />
+                </span>
+                <span className="Text">Privacy Policy</span>
+              </a>
+            </li> */}
+            <li>
+              <a onClick={() => navigate("/help-center-mentee")} style={{ cursor: "pointer" }}>
+                <span className="Icon">
+                  <img src="images/account-3.png" alt="" />
+                </span>
+                <span className="Text">Help Center</span>
+              </a>
+            </li>
+            <li>
+            <a onClick={handleLogout} style={{ cursor: "pointer" }}>
+              <span className="Icon">
+                <img src="images/account-4.png" alt="" />
+              </span>
+              <span className="Text">Sign out</span>
+            </a>
+            </li>
+            <li>
+            <a onClick={handleDeleteAccount} style={{ cursor: "pointer" }}>
+              <span className="Icon">
+                <img src="images/account-4.png" alt="" />
+              </span>
+              <span className="Text">Delete Account</span>
+            </a>
+          </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default Mentee_Navigation;

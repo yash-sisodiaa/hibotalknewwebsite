@@ -92,9 +92,7 @@ useEffect(() => {
               <div className="ResourcesBox"
               onClick={()=> Navigate(`/resource-mentor-details/${item.id}`)}
               style={{ cursor: "pointer" }}>
-                <span className="Icon">
-                  <img src="/src/assets/images/Heart.png" />
-                </span>
+                
 
                 <figure>
                   <span className="Play">
@@ -102,7 +100,7 @@ useEffect(() => {
                   </span>
 
                   <img
-                    src={item.thumbnailUrl || '/src/assets/images/Program-1.png'}
+                    src={item.thumbnailUrl || '/images/Program-1.png'}
                     alt={item.heading}
                   />
                 </figure>
