@@ -187,7 +187,7 @@ const Home = () => {
     }
   }, [mentors]);
 
-  console.log("mentor", mentors.length)
+  //console.log("mentor", mentors.length)
 
   useEffect(() => {
     if (testimonials.length > 0) {

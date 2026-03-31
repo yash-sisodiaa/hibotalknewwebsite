@@ -201,7 +201,7 @@ useEffect(() => {
 
       <div className="WrapperArea">
         <div className="WrapperBox">
-          <div className="ChatArea">
+          <div className={`ChatArea ${selectedRoom ? "ChatOpen" : ""}`}>
 
             {/* ================= LEFT SIDE ================= */}
             {rooms.length > 0 && (
