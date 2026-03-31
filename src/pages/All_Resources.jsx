@@ -9,37 +9,88 @@ import { useNavigate} from 'react-router-dom';
 
 const All_Resources = () => {
 
-    const Navigate = useNavigate();
-    const [resources, setResources] = useState([]);
+    const navigate = useNavigate();
 
+  const [specializations, setSpecializations] = useState([]);
+  const [activeSpec, setActiveSpec] = useState(null);
+  const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const fetchResources = async () => {
-  try {
-    const token = localStorage.getItem('token');
+  // GET USER + SPECIALIZATIONS
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user"));
 
-    const res = await api.get(`/resource/mentor-resources`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+        if (!token || !user?.id) return;
+
+        const res = await api.get(`/getUser/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const specs = res.data?.data?.specializations || [];
+
+        setSpecializations(specs);
+
+        if (specs.length > 0) {
+          setActiveSpec(specs[0].id);
+        }
+
+      } catch (err) {
+        console.error(
+          "USER FETCH ERROR 👉",
+          err.response?.data || err.message
+        );
       }
-    });
+    };
 
-    //console.log('RESOURCES', res.data.data);
-    const filtered = (res.data.data || []).filter(
-  (item) => item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc'
-   );
-    setResources(filtered);
+    fetchUser();
+  }, []);
 
-  } catch (err) {
-    console.error(
-      'RESOURCE FETCH ERROR 👉',
-      err.response?.data || err.message
-    );
-  }
-};
+  // FETCH RESOURCES
+  const fetchResources = async (categoryId) => {
+    try {
 
-useEffect(() => {
-  fetchResources();
-}, []);
+      if (!categoryId) return;
+
+      setLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      const res = await api.get(`/resource/get-resources/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const filtered = (res.data?.data || []).filter(
+        (item) =>
+          item.resourceType === "pdf" ||
+          item.resourceType === "ppt" ||
+          item.resourceType === "doc"
+      );
+
+      setResources(filtered);
+
+    } catch (err) {
+      console.error(
+        "RESOURCE FETCH ERROR",
+        err.response?.data || err.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ACTIVE SPEC CHANGE
+  useEffect(() => {
+    if (activeSpec) {
+      fetchResources(activeSpec);
+    }
+  }, [activeSpec]);
 
   return (
     
@@ -86,66 +137,87 @@ useEffect(() => {
         <div className="WrapperBox">
             <div className="TitleBox">
                 <h3>All Resources</h3>
-                
+                   
             </div>
+            <div className="HistoryArea">
+                  <div className="HistoryHead">
+                     
+            
+                      <ul>
+                        {specializations.map((item) => (
+                          <li key={item.id}>
+                            <button
+                              className={activeSpec === item.id ? "active" : ""}
+                              onClick={() => setActiveSpec(item.id)}
+                            >
+                              {item.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+              </div>
+            </div>
+            
 
             <div className="HistoryBody">
-                        <div className="row">
-                            {resources.map((item) => (
-                            <div className="col-sm-2" key={item.id}>
-                                <div className="ResourcesBox"
-                                  onClick={()=> Navigate(`/resource-mentor-details/${item.id}`)}
-                                  style={{ cursor: "pointer" }}
-                                >    
-                                
+          <div className="row">
 
-                                <figure>
-                                {/* VIDEO */}
-                                {/* {item.resourceType === 'video' && (
-                                    <>
-                                    <span className="Play">
-                                        <i className="fa fa-play" aria-hidden="true"></i>
-                                    </span>
+            {loading && <p>Loading resources...</p>}
 
-                                    <img
-                                        src={item.thumbnailUrl || '/images/Program-1.png'}
-                                        alt={item.heading}
-                                    />
-                                    </>
-                                )} */}
+            {!loading &&
+              resources.map((item) => (
+                <div className="col-sm-2" key={`${item.id}-${activeSpec}`}>
+                  <div
+                    className="ResourcesBox"
+                    onClick={() =>
+                      navigate(`/resource-mentor-details/${item.id}`)
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <figure>
 
-                                {/* PDF / PPT / DOC – CUSTOM ICON */}
-                                {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
-                                <div className="OnlyIcon">
-                                    {item.resourceType === 'pdf' && (
-                                    <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
-                                    )}
+                      {(item.resourceType === "pdf" ||
+                        item.resourceType === "ppt" ||
+                        item.resourceType === "doc") && (
+                        <div className="OnlyIcon">
 
-                                    {item.resourceType === 'ppt' && (
-                                    <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
-                                    )}
+                          {item.resourceType === "pdf" && (
+                            <i
+                              className="fa fa-file-pdf-o PdfIcon"
+                              aria-hidden="true"
+                            ></i>
+                          )}
 
-                                    {item.resourceType === 'doc' && (
-                                    <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
-                                    )}
-                                </div>
-                                )}
+                          {item.resourceType === "ppt" && (
+                            <i
+                              className="fa fa-file-powerpoint-o PptIcon"
+                              aria-hidden="true"
+                            ></i>
+                          )}
 
-                                </figure>
+                          {item.resourceType === "doc" && (
+                            <i
+                              className="fa fa-file-word-o DocIcon"
+                              aria-hidden="true"
+                            ></i>
+                          )}
 
-
-
-                                <figcaption>
-                                    <p>{item.heading}</p>
-                                </figcaption>
-
-                                </div>
-                            </div>
-                            ))}
-
-                        
                         </div>
-                    </div>
+                      )}
+
+                    </figure>
+
+                    <figcaption>
+                      <p>{item.heading}</p>
+                    </figcaption>
+                  </div>
+                </div>
+              ))}
+
+           
+
+          </div>
+        </div>
          
            </div>
     </div>

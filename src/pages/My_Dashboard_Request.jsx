@@ -111,7 +111,7 @@ const My_Dashboard_Request = () => {
                         <aside>
                           <span className="Icon">
                             <img
-                              src={session.mentee.profile_pic}
+                              src={session.mentee.profile_pic || '/images/person-icon-png-12.jpg'}
                               alt=""
                             />
                           </span>
@@ -243,7 +243,7 @@ const My_Dashboard_Request = () => {
             <div className="ProfileInfo">
               <span className="Icon">
                 <img
-                  src={selectedProfile.profile_pic}
+                  src={selectedProfile.profile_pic || '/images/person-icon-png-12.jpg'}
                   alt=""
                 />
               </span>

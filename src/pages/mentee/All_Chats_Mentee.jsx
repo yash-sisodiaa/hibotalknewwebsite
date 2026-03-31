@@ -12,6 +12,7 @@ const All_Chats_Mentee = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   // ==============================
   // Fetch All Rooms
@@ -203,222 +204,266 @@ useEffect(() => {
           <div className="ChatArea">
 
             {/* ================= LEFT SIDE ================= */}
-            <div className="ChatLeft">
-              <h3>Chat</h3>
+            {rooms.length > 0 && (
+              <div className="ChatLeft">
+                <h3>Chat</h3>
 
-              <ul>
-                {rooms.map((room) => {
-                  const otherUser =
-                    room.mentorId === mentorId
-                      ? room.mentee
-                      : room.mentor;
+                <ul>
+                  {rooms.map((room) => {
+                    const otherUser =
+                      room.mentorId === mentorId
+                        ? room.mentee
+                        : room.mentor;
 
-                  const lastMessage = room.messages[0];
+                    const lastMessage = room.messages[0];
 
-                  return (
-                    <li
-                      key={room.id}
-                      className={
-                        selectedRoom?.id === room.id ? "active" : ""
-                      }
-                      onClick={() => setSelectedRoom(room)}
-                    >
-                      <div className="UserBox">
-                        <span className="Icon">
-                          <img src={otherUser.profile_pic} alt="" />
-                        </span>
-
-                        {room.unreadCount > 0 && (
-                          <span className="Count">
-                            {room.unreadCount}
+                    return (
+                      <li
+                        key={room.id}
+                        className={
+                          selectedRoom?.id === room.id ? "active" : ""
+                        }
+                        onClick={() => setSelectedRoom(room)}
+                      >
+                        <div className="UserBox">
+                          <span className="Icon">
+                            <img src={otherUser.profile_pic} alt="" />
                           </span>
-                        )}
 
-                        <h6>{otherUser.fullname}</h6>
+                          {room.unreadCount > 0 && (
+                            <span className="Count">
+                              {room.unreadCount}
+                            </span>
+                          )}
 
-                        <span className="Time">
-                          {lastMessage &&
-                            new Date(
-                              lastMessage.createdAt
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                        </span>
+                          <h6>{otherUser.fullname}</h6>
 
-                        <p>
-                          {lastMessage?.content ||
-                            "No messages yet"}
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+                          <span className="Time">
+                            {lastMessage &&
+                              new Date(
+                                lastMessage.createdAt
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                          </span>
+
+                          <p>
+                            {lastMessage?.content ||
+                              "No messages yet"}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
 
             {/* ================= RIGHT SIDE ================= */}
-            <div className="ChatRight">
-  {selectedRoom ? (
-    <>
-      {/* ================= HEADER ================= */}
-      <div className="ChatHead">
-        <h4>
-          {selectedRoom.mentorId === mentorId
-            ? selectedRoom.mentee.fullname
-            : selectedRoom.mentor.fullname}
-        </h4>
-      </div>
-
-      {/* ================= BODY ================= */}
-      <div className="ChatBody" ref={chatBodyRef}>
-        <ul>
-          {messages.map((msg, index) => {
-            const isMe = msg.senderId === mentorId;
-
-            const currentDate = new Date(msg.createdAt).toDateString();
-            const prevDate =
-              index > 0
-                ? new Date(messages[index - 1].createdAt).toDateString()
-                : null;
-
-            const showDate = currentDate !== prevDate;
-            const isToday =
-              currentDate === new Date().toDateString();
-
-            return (
-              <React.Fragment key={msg.id}>
-                
-                {/* ===== DATE SEPARATOR ===== */}
-                {showDate && (
-                  <div className="DateSeparator">
-                    {isToday
-                      ? "Today"
-                      : new Date(msg.createdAt).toLocaleDateString()}
+            <div 
+              className="ChatRight" 
+              style={{ width: rooms.length > 0 ? "" : "100%" }}
+            >
+              {selectedRoom ? (
+                <>
+                  {/* ================= HEADER ================= */}
+                  <div className="ChatHead">
+                    <h4>
+                      {selectedRoom.mentorId === mentorId
+                        ? selectedRoom.mentee.fullname
+                        : selectedRoom.mentor.fullname}
+                    </h4>
                   </div>
-                )}
 
-                <li>
-                  <div className={isMe ? "MyMessage" : "OtherMessage"}>
-                    <div className="Message">
+                  {/* ================= BODY ================= */}
+                  <div className="ChatBody" ref={chatBodyRef}>
+                    <ul>
+                      {messages.map((msg, index) => {
+                        const isMe = msg.senderId === mentorId;
 
-                      {/* ===== MESSAGE CONTENT ===== */}
-                      {msg.isDeleted ? (
-                        <i style={{ color: "#888" }}>
-                          This message was deleted
-                        </i>
-                      ) : msg.fileUrl ? (
-                        <img
-                          src={msg.fileUrl}
-                          alt="chat"
-                          style={{
-                            maxWidth: "220px",
-                            borderRadius: "10px",
-                          }}
-                        />
-                      ) : (
-                        msg.content && <p>{msg.content}</p>
-                      )}
+                        const currentDate = new Date(msg.createdAt).toDateString();
+                        const prevDate =
+                          index > 0
+                            ? new Date(messages[index - 1].createdAt).toDateString()
+                            : null;
 
-                      {/* ===== TIME + TICKS ===== */}
-                      <span className="Time">
-                        {new Date(msg.createdAt).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        const showDate = currentDate !== prevDate;
+                        const isToday =
+                          currentDate === new Date().toDateString();
 
-                        {isMe && !msg.isDeleted && (
-                          <span
-                            style={{
-                              marginLeft: 8,
-                              fontSize: 12,
-                              color: msg.seen ? "#4fc3f7" : "#999",
-                            }}
-                          >
-                            {msg.seen ? "✔✔" : "✔"}
-                          </span>
-                        )}
+                        return (
+                          <React.Fragment key={msg.id}>
+                            
+                            {/* ===== DATE SEPARATOR ===== */}
+                            {showDate && (
+                              <div className="DateSeparator">
+                                {isToday
+                                  ? "Today"
+                                  : new Date(msg.createdAt).toLocaleDateString()}
+                              </div>
+                            )}
 
-                        {/* ===== DELETE BUTTON ===== */}
-                        {isMe && !msg.isDeleted && (
-                          <button
-                            onClick={() =>
-                              handleDeleteMessage(msg.id)
-                            }
-                            style={{
-                              background: "transparent",
-                              border: "none",
-                              marginLeft: 10,
-                              cursor: "pointer",
-                            }}
-                          >
-                            🗑
-                          </button>
-                        )}
-                      </span>
-                    </div>
+                            <li>
+                              <div className={isMe ? "MyMessage" : "OtherMessage"}>
+                                <div className="Message">
+
+                                  {/* ===== MESSAGE CONTENT ===== */}
+                                  {msg.isDeleted ? (
+                                    <i style={{ color: "#888" }}>
+                                      This message was deleted
+                                    </i>
+                                  ) : msg.fileUrl ? (
+                                    <img
+                                      src={msg.fileUrl}
+                                      alt="chat"
+                                      style={{
+                                        maxWidth: "220px",
+                                        borderRadius: "10px",
+                                      }}
+                                    />
+                                  ) : (
+                                    msg.content && <p>{msg.content}</p>
+                                  )}
+
+                                  {/* ===== TIME + TICKS ===== */}
+                                  <span className="Time">
+                                    {new Date(msg.createdAt).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+
+                                    {isMe && !msg.isDeleted && (
+                                      <span
+                                        style={{
+                                          marginLeft: 8,
+                                          fontSize: 12,
+                                          color: msg.seen ? "#4fc3f7" : "#999",
+                                        }}
+                                      >
+                                        {msg.seen ? "✔✔" : "✔"}
+                                      </span>
+                                    )}
+
+                                    {/* ===== DELETE BUTTON (3-dot menu) ===== */}
+                                    {isMe && !msg.isDeleted && (
+                                      <span style={{ position: "relative", marginLeft: 8 }}>
+                                        <button
+                                          onClick={() =>
+                                            setOpenMenuId(
+                                              openMenuId === msg.id ? null : msg.id
+                                            )
+                                          }
+                                          className="DotsBtn"
+                                        >
+                                          ⋮
+                                        </button>
+                                        {openMenuId === msg.id && (
+                                          <div
+                                            style={{
+                                              position: "absolute",
+                                              right: 0,
+                                              bottom: "150%",
+                                              background: "#fff",
+                                              border: "1px solid #e0e0e0",
+                                              borderRadius: 6,
+                                              boxShadow: "0 6px 12px rgba(0,0,0,0.12)",
+                                              zIndex: 5,
+                                              minWidth: 110,
+                                              padding: "6px 0",
+                                            }}
+                                          >
+                                            <button
+                                              onClick={() => {
+                                                handleDeleteMessage(msg.id);
+                                                setOpenMenuId(null);
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "8px 12px",
+                                                background: "transparent",
+                                                border: "none",
+                                                fontSize: 13,
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        )}
+                                      </span>
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                            </li>
+
+                          </React.Fragment>
+                        );
+                      })}
+                    </ul>
                   </div>
-                </li>
 
-              </React.Fragment>
-            );
-          })}
-        </ul>
-      </div>
+                  {/* ================= FOOTER ================= */}
+                  <div className="ChatFooter">
 
-      {/* ================= FOOTER ================= */}
-      <div className="ChatFooter">
+                    {/* Hidden File Input */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="imageUpload"
+                      onChange={handleImageUpload}
+                    />
 
-        {/* Hidden File Input */}
-        <input
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          id="imageUpload"
-          onChange={handleImageUpload}
-        />
+                    {/* Image Button */}
+                    <button
+                      onClick={() =>
+                        document.getElementById("imageUpload").click()
+                      }
+                    >
+                      <img src="/images/add.png" alt="add" />
+                    </button>
 
-        {/* Image Button */}
-        <button
-          onClick={() =>
-            document.getElementById("imageUpload").click()
-          }
-        >
-          <img src="/images/add.png" alt="add" />
-        </button>
+                    {/* Text Input */}
+                    <input
+                      type="text"
+                      placeholder="Type message..."
+                      value={newMessage}
+                      onChange={(e) =>
+                        setNewMessage(e.target.value)
+                      }
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleSend()
+                      }
+                    />
 
-        {/* Text Input */}
-        <input
-          type="text"
-          placeholder="Type message..."
-          value={newMessage}
-          onChange={(e) =>
-            setNewMessage(e.target.value)
-          }
-          onKeyDown={(e) =>
-            e.key === "Enter" && handleSend()
-          }
-        />
-
-        {/* Send Button */}
-        <button onClick={handleSend}>
-          <img src="/images/send.png" alt="send" />
-        </button>
-      </div>
-    </>
-  ) : (
-    <div
-      style={{
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <h4>Select a chat to start messaging</h4>
-    </div>
-  )}
-</div>
+                    {/* Send Button */}
+                    <button onClick={handleSend}>
+                      <img src="/images/send.png" alt="send" />
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "20px",
+                    textAlign: "center"
+                  }}
+                >
+                  <h4>
+                    {rooms.length > 0 
+                      ? "Select a chat to start messaging" 
+                      : "No chats available yet. Connect with mentors to start a conversation!"}
+                  </h4>
+                </div>
+              )}
+            </div>
 
           </div>
         </div>

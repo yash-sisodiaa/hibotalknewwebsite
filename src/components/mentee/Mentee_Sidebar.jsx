@@ -7,17 +7,22 @@ const Mentee_Sidebar = () => {
 
   const menuItems = [
     { path: "/my-dashboard-mentee", icon: "Nav-1.png", label: "Dashboard" },
+    { path: "/all-community-mentee", icon: "Nav-2.png", label: "All Community" },
     { path: "/finished-courses", icon: "Nav-2.png", label: "Finished Courses" },
     { path: "/session-history", icon: "Nav-5.png", label: "Session History" },
     { path: "/my-resources", icon: "Nav-6.png", label: "Saved Resources" },
-   
+
   ];
 
   return (
     <div className="SidenavArea">
       <div className="SidenavHead">
-        <img src="/images/Logo.png" alt="Logo" />
-        <button> × </button>
+        <img src="/images/Logo.png" alt="Logo" style={{ cursor: "pointer" }}
+          onClick={() => navigate("/")} />
+        <button onClick={() => {
+          const sidebar = document.querySelector('.SidenavArea');
+          if (sidebar) sidebar.classList.remove('show');
+        }}> × </button>
       </div>
 
       <div className="SidenavBody">

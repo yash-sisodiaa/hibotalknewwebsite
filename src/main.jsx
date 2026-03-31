@@ -8,6 +8,7 @@ import 'owl.carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../src/assets/css/style.css';
+import '../src/assets/css/responsive.css';
 
 import $ from 'jquery';
 window.$ = window.jQuery = $;

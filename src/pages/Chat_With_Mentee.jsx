@@ -18,6 +18,7 @@ const Chat_With_Mentee = () => {
   const [messages, setMessages] = useState([]);
   //console.log("mesaages", messages);
   const [newMessage, setNewMessage] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   //  Create Room
   const createRoom = async () => {
@@ -47,7 +48,7 @@ const Chat_With_Mentee = () => {
     }
   };
 
-  // 🔹 On Load
+  // ðŸ”¹ On Load
   useEffect(() => {
     createRoom();
   }, []);
@@ -267,45 +268,70 @@ const handleImageUpload = async (e) => {
                                         minute: "2-digit",
                                       }
                                     )}
-    
-                                   {isMe && (
-                                      <div
+
+                                    {isMe && !msg.isDeleted && (
+                                      <span
                                         style={{
-                                          display: "flex",
-                                          alignItems: "center",
-                                          gap: "6px",
-                                          marginLeft: "6px",
+                                          marginLeft: 8,
+                                          fontSize: 12,
+                                          color: msg.seen ? "#4fc3f7" : "#999",
                                         }}
                                       >
-                                        {/* Delete Button (Hide if already deleted) */}
-                                        {!msg.isDeleted && (
-                                          <button
-                                            onClick={() => handleDeleteMessage(msg.id)}
+                                        {msg.seen ? "✔✔" : "✔"}
+                                      </span>
+                                    )}
+
+                                    {/* ===== DELETE BUTTON (3-dot menu) ===== */}
+                                    {isMe && !msg.isDeleted && (
+                                      <span style={{ position: "relative", marginLeft: 8 }}>
+                                        <button
+                                          onClick={() =>
+                                            setOpenMenuId(
+                                              openMenuId === msg.id ? null : msg.id
+                                            )
+                                          }
+                                          className="DotsBtn"
+                                        >
+                                          ⋮
+                                        </button>
+                                        {openMenuId === msg.id && (
+                                          <div
                                             style={{
-                                              background: "transparent",
-                                              border: "none",
-                                              cursor: "pointer",
-                                              fontSize: "18px",
+                                              position: "absolute",
+                                              right: 0,
+                                              bottom: "150%",
+                                              background: "#fff",
+                                              border: "1px solid #e0e0e0",
+                                              borderRadius: 6,
+                                              boxShadow: "0 6px 12px rgba(0,0,0,0.12)",
+                                              zIndex: 5,
+                                              minWidth: 110,
+                                              padding: "6px 0",
                                             }}
                                           >
-                                            🗑
-                                          </button>
+                                            <button
+                                              onClick={() => {
+                                                handleDeleteMessage(msg.id);
+                                                setOpenMenuId(null);
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "8px 12px",
+                                                background: "transparent",
+                                                border: "none",
+                                                fontSize: 13,
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
                                         )}
-    
-                                        {/* Seen Tick (Optional: hide if deleted) */}
-                                        {!msg.isDeleted && (
-                                          <span
-                                            style={{
-                                              fontSize: 12,
-                                              color: msg.seen ? "#4fc3f7" : "#999",
-                                            }}
-                                          >
-                                            {msg.seen ? "✔✔" : "✔"}
-                                          </span>
-                                        )}
-                                      </div>
+                                      </span>
                                     )}
                                   </span>
+
     
                                 </div>
                               </div>

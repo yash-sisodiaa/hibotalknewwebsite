@@ -54,7 +54,7 @@ const Resource_Mentors_Details = () => {
             <div className="row">
 
               {/* LEFT SIDE (Preview Section) */}
-              <div className="col-lg-6 col-md-12 col-sm-12">
+              <div className="col-lg-6 col-md-12">
                 <div className="DetailsLeft">
 
                   {/* VIDEO */}

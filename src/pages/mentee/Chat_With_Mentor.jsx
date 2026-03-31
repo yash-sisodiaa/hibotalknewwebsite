@@ -14,6 +14,7 @@ const Chat_With_Mentor = () => {
   const [chatRoomId, setChatRoomId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   //  Create Room
   const createRoom = async () => {
@@ -131,63 +132,63 @@ const Chat_With_Mentor = () => {
   }
 
   useEffect(() => {
-  if (!chatRoomId) return;
+    if (!chatRoomId) return;
 
-  const handleDelete = ({ messageId }) => {
-    //console.log("Delete event received:", messageId);
+    const handleDelete = ({ messageId }) => {
+      //console.log("Delete event received:", messageId);
 
-    setMessages((prev) =>
-      prev.map((msg) =>
-        
-        Number(msg.id) === Number(messageId)
-          
-          ? {
+      setMessages((prev) =>
+        prev.map((msg) =>
+
+          Number(msg.id) === Number(messageId)
+
+            ? {
               ...msg,
               content: "This message was deleted",
               isDeleted: true,
             }
-          : msg
-      )
-    );
-  };
-  
-
-  socket.on("messageDeleted", handleDelete);
-
-  return () => {
-    socket.off("messageDeleted", handleDelete);
-  };
-}, [chatRoomId]);
+            : msg
+        )
+      );
+    };
 
 
-const handleImageUpload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+    socket.on("messageDeleted", handleDelete);
 
-  const formData = new FormData();
-  formData.append("file", file);
+    return () => {
+      socket.off("messageDeleted", handleDelete);
+    };
+  }, [chatRoomId]);
 
-  try {
-    const res = await api.post("/chat/upload-message-file", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
 
-     const { fileUrl, fileType } = res.data.data;
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-     socket.emit("sendMessage", {
-      chatRoomId,
-      senderId: menteeId,
-      content: "",
-      fileUrl,
-      fileType,
-      replyToMessageId: null,
-    });
-  } catch (error) {
-    console.error("Image upload failed:", error);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await api.post("/chat/upload-message-file", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { fileUrl, fileType } = res.data.data;
+
+      socket.emit("sendMessage", {
+        chatRoomId,
+        senderId: menteeId,
+        content: "",
+        fileUrl,
+        fileType,
+        replyToMessageId: null,
+      });
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    }
   }
-}
 
 
 
@@ -265,34 +266,13 @@ const handleImageUpload = async (e) => {
                                   }
                                 )}
 
-                               {isMe && (
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "6px",
-                                      marginLeft: "6px",
-                                    }}
-                                  >
-                                    {/* Delete Button (Hide if already deleted) */}
-                                    {!msg.isDeleted && (
-                                      <button
-                                        onClick={() => handleDeleteMessage(msg.id)}
-                                        style={{
-                                          background: "transparent",
-                                          border: "none",
-                                          cursor: "pointer",
-                                          fontSize: "18px",
-                                        }}
-                                      >
-                                        🗑
-                                      </button>
-                                    )}
-
+                                {isMe && (
+                                  <>
                                     {/* Seen Tick (Optional: hide if deleted) */}
                                     {!msg.isDeleted && (
                                       <span
                                         style={{
+                                          marginLeft: 8,
                                           fontSize: 12,
                                           color: msg.seen ? "#4fc3f7" : "#999",
                                         }}
@@ -300,7 +280,57 @@ const handleImageUpload = async (e) => {
                                         {msg.seen ? "✔✔" : "✔"}
                                       </span>
                                     )}
-                                  </div>
+
+                                    {/* Delete Button (3-dot menu) */}
+                                    {!msg.isDeleted && (
+                                      <span style={{ position: "relative", marginLeft: 8 }}>
+                                        <button
+                                          onClick={() =>
+                                            setOpenMenuId(
+                                              openMenuId === msg.id ? null : msg.id
+                                            )
+                                          }
+                                          className="DotsBtn"
+                                        >
+                                          ⋮
+                                        </button>
+                                        {openMenuId === msg.id && (
+                                          <div
+                                            style={{
+                                              position: "absolute",
+                                              right: 0,
+                                              bottom: "150%",
+                                              background: "#fff",
+                                              border: "1px solid #e0e0e0",
+                                              borderRadius: 6,
+                                              boxShadow: "0 6px 12px rgba(0,0,0,0.12)",
+                                              zIndex: 5,
+                                              minWidth: 110,
+                                              padding: "6px 0",
+                                            }}
+                                          >
+                                            <button
+                                              onClick={() => {
+                                                handleDeleteMessage(msg.id);
+                                                setOpenMenuId(null);
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "8px 12px",
+                                                background: "transparent",
+                                                border: "none",
+                                                fontSize: 13,
+                                                cursor: "pointer",
+                                              }}
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        )}
+                                      </span>
+                                    )}
+                                  </>
                                 )}
                               </span>
 
@@ -314,7 +344,7 @@ const handleImageUpload = async (e) => {
                 </ul>
               </div>
 
-              <div className="ChatFooter"> 
+              <div className="ChatFooter">
                 {/* <input
                   type="file"
                   accept="image/*"
@@ -331,28 +361,28 @@ const handleImageUpload = async (e) => {
                   onChange={handleImageUpload}
                 />
 
-            {/* <button onClick={() => document.getElementById("cameraInput").click()}>
+                {/* <button onClick={() => document.getElementById("cameraInput").click()}>
                 <img src="/images/camera.png" alt="camera" />
             </button> */}
 
-            <button onClick={() => document.getElementById("imageUpload").click()}>
-                <img src="/images/add.png" alt="add" />
-            </button> 
+                <button onClick={() => document.getElementById("imageUpload").click()}>
+                  <img src="/images/add.png" alt="add" />
+                </button>
 
-            <input
-                type="text"
-                placeholder="Type Messages..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={(e) =>
-                e.key === "Enter" && handleSend()
-                }
-            /> 
+                <input
+                  type="text"
+                  placeholder="Type Messages..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && handleSend()
+                  }
+                />
 
-            <button onClick={handleSend}>
-                <img src="/images/send.png" alt="send" />
-            </button> 
-            </div>
+                <button onClick={handleSend}>
+                  <img src="/images/send.png" alt="send" />
+                </button>
+              </div>
 
 
             </div>

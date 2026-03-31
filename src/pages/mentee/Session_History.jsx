@@ -7,6 +7,11 @@ const Session_History = () => {
   const [sessions, setSessions] = useState([]);
   const [activeTab, setActiveTab] = useState("past");
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+const [selectedSession, setSelectedSession] = useState(null);
+const [rating, setRating] = useState(0);
+const [remark, setRemark] = useState("");
+
   useEffect(() => {
     fetchSessions();
   }, [activeTab]);
@@ -45,6 +50,53 @@ const Session_History = () => {
       console.error("Error fetching sessions:", error);
     }
   };
+
+
+  const [likes, setLikes] = useState([]);
+
+  const likeOptions = [
+  "Teacher was Patient",
+  "Clarity in Language",
+  "To-the-point Coverage of sessions"
+];
+
+const toggleLike = (option) => {
+  if (likes.includes(option)) {
+    setLikes(likes.filter((item) => item !== option));
+  } else {
+    setLikes([...likes, option]);
+  }
+};
+
+  const submitReview = async () => {
+  try {
+
+    const payload = {
+      sessionId: selectedSession.id,
+      menteeId: id,
+      mentorId: selectedSession.mentor?.id,
+      rating: rating,
+
+      experience: likes.join(", "),   // options
+      comment: remark                 // textarea
+    };
+
+    const res = await api.post("/review", payload);
+
+    if (res.data.success) {
+      alert("Review submitted");
+      fetchSessions();
+
+      setShowReviewModal(false);
+      setRating(0);
+      setRemark("");
+      setLikes([]);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <>
@@ -98,26 +150,43 @@ const Session_History = () => {
                       className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
                     >
                       <div className="HistoryBox">
-                        <article>
-                          <span className="Icon">
-                            <img
-                              src={item.mentor?.profile_pic}
-                              alt="mentor"
-                            />
-                          </span>
+  <article>
+    <span className="Icon">
+      <img src={item.mentor?.profile_pic} alt="mentor" />
+    </span>
 
-                          
+    <h4>{item.mentor?.fullname}</h4>
+    <p>{item.localTimeZone}</p>
+  </article>
 
-                          <h4>{item.mentor?.fullname}</h4>
-                          <p>{item.localTimeZone}</p>
-                        </article>
+  <aside>
+    <p>
+      {item.localDate} | {item.localTime}
+    </p>
+  </aside>
 
-                        <aside>
-                          <p>
-                            {item.localDate} | {item.localTime}
-                          </p>
-                        </aside>
-                      </div>
+ {activeTab === "past" && (
+  item.Review ? (
+    <div className="ratingStars">
+      {[1,2,3,4,5].map((star) => (
+        <span key={star}>
+          {star <= item.Review.rating ? "★" : "☆"}
+        </span>
+      ))}
+    </div>
+  ) : item.canReview ? (
+    <button
+      className="ReviewBtn"
+      onClick={() => {
+        setSelectedSession(item);
+        setShowReviewModal(true);
+      }}
+    >
+      Write a Review
+    </button>
+  ) : null
+)}
+</div>
                     </div>
                   ))
                 ) : (
@@ -128,6 +197,65 @@ const Session_History = () => {
               </div>
             </div>
           </div>
+          {showReviewModal && (
+  <div className="reviewModal">
+    <div className="reviewContent">
+
+      <h3>How was your experience?</h3>
+
+      <div className="stars">
+        {[1,2,3,4,5].map((star)=>(
+          <span
+            key={star}
+            onClick={()=>setRating(star)}
+            style={{
+              fontSize:"28px",
+              cursor:"pointer",
+              color: rating >= star ? "#ffc107" : "#ccc"
+            }}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+       <h4>What do you like the most about the session?</h4>
+        <div className="reviewTags">
+  {likeOptions.map((option, index) => (
+    <span
+      key={index}
+      className={`tag ${likes.includes(option) ? "activeTag" : ""}`}
+      onClick={() => toggleLike(option)}
+    >
+      {option}
+    </span>
+  ))}
+</div>
+        
+      <h4>What remarks you'd like to give to your teacher? (optional)</h4>
+
+      <textarea
+        placeholder="Enter your remarks here"
+        value={remark}
+        onChange={(e)=>setRemark(e.target.value)}
+      />
+
+      <button
+        className="SubmitReview"
+        onClick={()=>submitReview()}
+      >
+        Submit Review
+      </button>
+
+      <button
+        className="CloseModal"
+        onClick={()=>setShowReviewModal(false)}
+      >
+        Close
+      </button>
+
+    </div>
+  </div>
+)}
         </div>
       </div>
     </>

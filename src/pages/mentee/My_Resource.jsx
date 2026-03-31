@@ -17,7 +17,7 @@ const My_Resource = () => {
         //const token = localStorage.getItem('token');
         const userId = localStorage.getItem('user');
         const id = JSON.parse(userId).id;
-        
+
 
         const res = await api.get(`/wishlist/${id}?type=mentee`);
 
@@ -64,7 +64,7 @@ const My_Resource = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <span className="Icon">
-                      
+
                     </span>
 
                     <figure>
@@ -104,7 +104,7 @@ const My_Resource = () => {
               ))}
 
               {resources.length === 0 && (
-                <p style={{ padding: "20px" }}>No resources found.</p>
+                <p style={{ padding: "20px", minHeight: '120px' }}>No resources found.</p>
               )}
             </div>
           </div>
@@ -128,7 +128,7 @@ const My_Resource = () => {
               >
                 <div className="MontorBox">
                   <span className="Icon">
-                    
+
                   </span>
 
                   <figure>
@@ -147,7 +147,7 @@ const My_Resource = () => {
                     </Link>
                   </h3>
 
-                  <h5>{mentor.specialization}</h5>
+
 
                   <h6>
                     Experience: {mentor.experience}

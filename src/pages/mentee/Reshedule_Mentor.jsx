@@ -1,25 +1,26 @@
-import React, { useState, useMemo,useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import dayjs from "dayjs";
 import Mentee_Navigation from '../../components/mentee/Mentee_Navigation'
 import Mentee_Sidebar from '../../components/mentee/Mentee_Sidebar'
 import api from '../../api/axiosInstance';
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Reshedule_Mentor = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const mentorId = location.state?.mentorId;
+  const sessionId = location.state?.sessionId;
+  const localDate = location.state?.localDate;
 
-   const location = useLocation();
-     const mentorId = location.state?.mentorId;
-     const sessionId = location.state?.sessionId;
-     const localDate = location.state?.localDate;
+  //console.log("Received mentorId:", mentorId);
+  //console.log("Received sessionId:", sessionId);
+  //console.log("Received localDate:", localDate);
+  const today = dayjs().startOf("day");
 
-     console.log("Received mentorId:", mentorId);
-  console.log("Received sessionId:", sessionId);
-  console.log("Received localDate:", localDate);
-    const today = dayjs().startOf("day");
+  const now = dayjs();
 
-     const now = dayjs();
 
-  
   const [selectedDate, setSelectedDate] = useState(localDate ? dayjs(localDate) : today);
   const [selectedTimes, setSelectedTimes] = useState(null);
   const [bookedSlots, setBookedSlots] = useState([]);
@@ -34,11 +35,11 @@ const Reshedule_Mentor = () => {
       const slotDateTime = dayjs(
         `${selectedDate.format("YYYY-MM-DD")} ${slot.mentorTime}`
       );
-  
+
       if (selectedDate.isSame(today, "day")) {
         return slotDateTime.isAfter(now);
       }
-  
+
       return true;
     });
 
@@ -66,98 +67,124 @@ const Reshedule_Mentor = () => {
   }
 
   const timeSlots = useMemo(() => {
-  return bookedSlots.map(slot => slot.mentorTime);
-}, [bookedSlots]);
+    return bookedSlots.map(slot => slot.mentorTime);
+  }, [bookedSlots]);
 
-useEffect(() => {
-  setSelectedTimes([]);
-  fetchSlots();
-}, [selectedDate]);
+  useEffect(() => {
+    setSelectedTimes([]);
+    fetchSlots();
+  }, [selectedDate]);
 
-const fetchSlots = async () => {
+  const fetchSlots = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    
 
-    
+
+
     const res = await api.post(
-        `/calender/booked/${mentorId}`,
-        {
-            date:selectedDate.format("YYYY-MM-DD")
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        }
-    );
-
-    if(res.data.success){
-        setBookedSlots(res.data.booked);
-
-    //      if (res.data.booked.length > 0) {
-    //   setSelectedTime(res.data.booked[0].mentorTime);
-    // }
-    }
-}
-
-
-const handleTimeSelect = (time, isBooked) => {
-  if (isBooked) return; // booked slot select nahi hoga
-
-  setSelectedTimes(time);
-};
-
-const handleResheduleSession = async () => {
-
-    
-  if (selectedTimes.length === 0) {
-    alert("Please select at least one time slot");
-    return;
-  }
-
-  //const token = localStorage.getItem("token");
-  
-  //const user = JSON.parse(localStorage.getItem("user"));
-  //const id = user?.id;
-  try {
-    const res = await api.put(
-      `/session/reschedule/${sessionId}`,
+      `/calender/booked/${mentorId}`,
       {
-        rescheduleDate: selectedDate.format("YYYY-MM-DD"),
-        rescheduleTime: selectedTimes,
+        date: selectedDate.format("YYYY-MM-DD")
       },
-      
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
     );
 
-    if (res.data.message == "Reschedule request sent successfully.") {
-      alert("Reschedule request sent successfully.");
-      setSelectedTimes([]);
-      fetchSlots();
+    if (res.data.success) {
+      setBookedSlots(res.data.booked);
+
+      //      if (res.data.booked.length > 0) {
+      //   setSelectedTime(res.data.booked[0].mentorTime);
+      // }
     }
-  } catch (err) {
-  if (err.response) {
-    
-    if (err.response.status === 400) {
-      alert(err.response.data.message);
-    } else {
-      alert("Something went wrong");
-    }
-  } else {
-    
-    alert("Network error. Please try again.");
   }
 
-  console.error(err);
-}
-};
+
+  const handleTimeSelect = (time, isBooked) => {
+    if (isBooked) return; // booked slot select nahi hoga
+
+    setSelectedTimes(time);
+  };
+
+
+  useEffect(() => {
+    setSelectedTimes([]);
+  }, [selectedDate]);
+
+  const handleResheduleSession = async () => {
+
+    //const now = dayjs();
+
+    if (selectedTimes.length === 0) {
+      alert("Please select at least one time slot");
+      return;
+    }
+
+    // if (selectedDate.isBefore(now, "day")) {
+    //       alert("You cannot add slots for past dates");
+    //       return;
+    //     }
+
+    //     if (selectedDate.isSame(now, "day")) {
+    //       const invalidTimes = selectedTimes.filter((time) => {
+    //         const slotTime = dayjs(
+    //           `${selectedDate.format("YYYY-MM-DD")} ${time}`
+    //         );
+    //         return slotTime.isBefore(now);
+    //       });
+
+    //       if (invalidTimes.length > 0) {
+    //         alert("You cannot add past time slots for today");
+    //         return;
+    //       }
+    //     }
+
+    //const token = localStorage.getItem("token");
+
+    //const user = JSON.parse(localStorage.getItem("user"));
+    //const id = user?.id;
+    try {
+      const res = await api.put(
+        `/session/reschedule/${sessionId}`,
+        {
+          rescheduleDate: selectedDate.format("YYYY-MM-DD"),
+          rescheduleTime: selectedTimes,
+        },
+
+      );
+
+      if (res.data.message == "Reschedule request sent successfully.") {
+        alert("Reschedule request sent successfully.");
+        setSelectedTimes([]);
+        fetchSlots();
+        setTimeout(() => { navigate("/my-dashboard-mentee") }, 1000);
+      }
+    } catch (err) {
+      if (err.response) {
+
+        if (err.response.status === 400) {
+          alert(err.response.data.message);
+        } else {
+          alert("Something went wrong");
+        }
+      } else {
+
+        alert("Network error. Please try again.");
+      }
+
+      console.error(err);
+    }
+  };
 
   return (
     <>
-    <Mentee_Navigation/>
-    <Mentee_Sidebar/>
+      <Mentee_Navigation />
+      <Mentee_Sidebar />
 
-    <div className="WrapperArea">
+      <div className="WrapperArea">
         <div className="WrapperBox">
           <div className="TitleBox">
             <h3>Reshedule Sessions</h3>
@@ -166,7 +193,7 @@ const handleResheduleSession = async () => {
           <div className="MontorArea">
             <div className="SessionSelect">
 
-             
+
               <ul>
                 {upcomingDays.map((day) => (
                   <li key={day.format("YYYY-MM-DD")}>
@@ -177,9 +204,8 @@ const handleResheduleSession = async () => {
                       onChange={() => setSelectedDate(day)}
                     />
                     <div
-                      className={`Check ${
-                        selectedDate.isSame(day, "day") ? "active" : ""
-                      }`}
+                      className={`Check ${selectedDate.isSame(day, "day") ? "active" : ""
+                        }`}
                     >
                       <span>{day.format("ddd").toUpperCase()}</span>
                       <strong>{day.format("DD")}</strong>
@@ -189,9 +215,10 @@ const handleResheduleSession = async () => {
                 ))}
               </ul>
 
-              
+
               <div className="month-header">
                 <button
+                  style={{ minWidth: "65px" }}
                   onClick={() =>
                     setSelectedDate(selectedDate.subtract(1, "month"))
                   }
@@ -202,6 +229,7 @@ const handleResheduleSession = async () => {
                 <h3>{selectedDate.format("MMMM YYYY")}</h3>
 
                 <button
+                  style={{ minWidth: "65px" }}
                   onClick={() =>
                     setSelectedDate(selectedDate.add(1, "month"))
                   }
@@ -222,68 +250,68 @@ const handleResheduleSession = async () => {
               {/* Calendar Grid */}
               <div className="calendar-grid">
                 {daysArray.map((day, index) => (
-                 <div
-  key={index}
-  className={`calendar-day 
+                  <div
+                    key={index}
+                    className={`calendar-day 
     ${day && selectedDate.isSame(day, "day") ? "active" : ""}
     ${day && day.isBefore(today, "day") ? "disabled" : ""}
   `}
-  onClick={() => {
-    if (day && !day.isBefore(today, "day")) {
-      setSelectedDate(day);
-    }
-  }}
->
-  {day ? day.date() : ""}
-</div>
+                    onClick={() => {
+                      if (day && !day.isBefore(today, "day")) {
+                        setSelectedDate(day);
+                      }
+                    }}
+                  >
+                    {day ? day.date() : ""}
+                  </div>
 
                 ))}
               </div>
 
-              
+
               <h4>Select Time</h4>
 
               <ul>
-  {filteredSlots.map((slot, index) => {
-    const time = slot.mentorTime;
-    const isActuallyBooked = slot.isBooked;
-    const isSelected = selectedTimes.includes(time);
+                {filteredSlots.map((slot, index) => {
+                  const time = slot.mentorTime;
+                  const isActuallyBooked = slot.isBooked;
+                  const isSelected = selectedTimes.includes(time);
 
-    return (
-      <li key={index}>
-        <input
-          type="radio"
-          name="timeSlot"
-          disabled={isActuallyBooked}
-          checked={isSelected}
-          onChange={() => handleTimeSelect(time, isActuallyBooked)}
-        />
+                  return (
+                    <li key={index}>
+                      <input
+                        type="radio"
+                        name="timeSlot"
+                        disabled={isActuallyBooked}
+                        checked={isSelected}
+                        onChange={() => handleTimeSelect(time, isActuallyBooked)}
+                      />
 
-        <div
-          className={`Check 
+                      <div
+                        className={`Check 
             ${isActuallyBooked ? "already-booked" : ""} 
             ${isSelected ? "new-selected" : ""}
           `}
-        >
-          <span>{time}</span>
-          {isActuallyBooked ? (
-            <small style={{ color: "red", fontSize: "0.75em", display: "block" }}>
-              Booked
-            </small>
-          ):(
-            <small>
-              Available
-            </small>
-          )}
-        </div>
-      </li>
-    );
-  })}
-</ul>
+                      >
+                        <span>{time}</span>
+                        {isActuallyBooked ? (
+                          <small style={{ color: "red", fontSize: "0.75em", display: "block" }}>
+                            Booked
+                          </small>
+                        ) : (
+                          <small>
+                            Available
+                          </small>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
 
-             <button onClick={handleResheduleSession}>
-                  Send Reschedule request
-                </button>
+              <button onClick={handleResheduleSession}>
+                Send Reschedule request
+              </button>
 
             </div>
           </div>

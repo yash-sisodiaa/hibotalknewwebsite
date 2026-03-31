@@ -47,12 +47,12 @@ const CommunitySection = () => {
         prev.map((item) =>
           item.id === communityId
             ? {
-                ...item,
-                isLiked: isLiked ? 0 : 1,
-                likesCount: isLiked
-                  ? item.likesCount - 1
-                  : item.likesCount + 1,
-              }
+              ...item,
+              isLiked: isLiked ? 0 : 1,
+              likesCount: isLiked
+                ? item.likesCount - 1
+                : item.likesCount + 1,
+            }
             : item
         )
       );
@@ -99,8 +99,17 @@ const CommunitySection = () => {
                 </h3>
 
                 <figcaption>
-                  <h4>{item.title}</h4>
-                  <p>{item.description}</p>
+                  <h4>
+                    {item.title?.length > 20
+                      ? item.title.slice(0, 20) + "..."
+                      : item.title}
+                  </h4>
+
+                  <p>
+                    {item.description?.length > 20
+                      ? item.description.slice(0, 20) + "..."
+                      : item.description}
+                  </p>
                   <h6>#Updatealert</h6>
 
                   <ul>
@@ -117,11 +126,10 @@ const CommunitySection = () => {
                     >
                       <span>
                         <i
-                          className={`fa ${
-                            item.isLiked === 1
+                          className={`fa ${item.isLiked === 1
                               ? "fa-heart text-danger"
                               : "fa-heart-o"
-                          }`}
+                            }`}
                         ></i>
                       </span>{" "}
                       {item.likesCount}

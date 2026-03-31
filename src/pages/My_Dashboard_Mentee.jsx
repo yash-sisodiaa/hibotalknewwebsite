@@ -11,64 +11,64 @@ import api from '../api/axiosInstance';
 
 const My_Dashboard_Mentee = () => {
 
-    ////////////////notification states/////////////////////
-    useEffect(() => {
-    
-      const setupNotifications = async () => {
-        try {
-    
-          const token = await getFcmToken();
-    
-          if (token) {
-    
-            await api.put(
-              "/notification-status",
-              { status: true },   // body data
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                }
+  ////////////////notification states/////////////////////
+  useEffect(() => {
+
+    const setupNotifications = async () => {
+      try {
+
+        const token = await getFcmToken();
+
+        if (token) {
+
+          await api.put(
+            "/notification-status",
+            { status: true },   // body data
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
               }
-            );
-    
-          }
-    
-        } catch (error) {
-          console.log("Notification setup error:", error);
+            }
+          );
+
         }
-      };
-    
-      setupNotifications();
-    
-    }, []);
+
+      } catch (error) {
+        console.log("Notification setup error:", error);
+      }
+    };
+
+    setupNotifications();
+
+  }, []);
 
   return (
     <>
-    
-    <Mentee_Navigation />
 
-    <Mentee_Sidebar/>
+      <Mentee_Navigation />
 
-    <div className="WrapperArea">
+      <Mentee_Sidebar />
+
+      <div className="WrapperArea">
         <div className="WrapperBox">
-            <div className="TitleBox">
-                <h3>Dashboard</h3> 
-            </div>
+          <div className="TitleBox">
+            <h3>Dashboard</h3>
+          </div>
 
-            <div className="DashboardArea">
+          <div className="DashboardArea">
 
-                <Upcoming_Session/>
+            <Upcoming_Session />
 
-                <MentorSection />
+            <MentorSection />
 
-                <CourseSuggestion />
+            <CourseSuggestion />
 
-                <CommunitySection/>
-            </div>
+            <CommunitySection />
+          </div>
         </div>
-    </div>
+      </div>
 
-    
+
     </>
   )
 }

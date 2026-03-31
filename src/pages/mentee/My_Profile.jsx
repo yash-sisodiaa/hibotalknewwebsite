@@ -5,7 +5,7 @@ import Mentee_Sidebar from '../../components/mentee/Mentee_Sidebar';
 import { useNavigate } from 'react-router-dom';
 
 const My_Profile = () => {
-  
+
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -19,27 +19,27 @@ const My_Profile = () => {
   // 2016-01-21 → 21/01/2016
   const formatForBackend = (dateString) => {
     if (!dateString) return '';
-  const [year, month, day] = dateString.split('-');
-  return `${day}/${month}/${year}`;
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   };
 
   const handleCheckboxChange = (id) => {
     setSelectedIds(prev => {
 
-    // Agar already selected hai → remove karne do
-    if (prev.includes(id)) {
-      return prev.filter(item => item !== id);
-    }
+      // Agar already selected hai → remove karne do
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      }
 
-    // Agar 5 already selected hain → aur add mat karo
-    if (prev.length >= 5) {
-      alert('You can select maximum 5 improvement areas.');
-      return prev;
-    }
+      // Agar 5 already selected hain → aur add mat karo
+      if (prev.length >= 5) {
+        alert('You can select maximum 5 improvement areas.');
+        return prev;
+      }
 
-    // Warna add karo
-    return [...prev, id];
-  });
+      // Warna add karo
+      return [...prev, id];
+    });
   };
 
   // Specializations
@@ -67,8 +67,8 @@ const My_Profile = () => {
 
         const data = res.data.data;
         if (data.dob) {
-        const [day, month, year] = data.dob.split('/');
-        data.dob = `${year}-${month}-${day}`; // convert once
+          const [day, month, year] = data.dob.split('/');
+          data.dob = `${year}-${month}-${day}`; // convert once
         }
         setProfile(data);
 
@@ -117,54 +117,56 @@ const My_Profile = () => {
       alert('Profile Updated Successfully');
       setProfile(res.data.data);
 
+      navigate("/my-dashboard-mentee");
+
     } catch (error) {
       console.error('Update failed', error);
       alert('Something went wrong');
     }
   };
 
-   // Switch Role
+  // Switch Role
   const handleSwitchRole = async () => {
-  try {
+    try {
 
-    const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user"));
 
-    const res = await api.post(
-  `/switch-role/${user.id}`,
-  {
+      const res = await api.post(
+        `/switch-role/${user.id}`,
+        {
 
-    isLogout: true
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  }
-);
+          isLogout: true
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    if (res.data.success) {
+      if (res.data.success) {
 
-      // new token save
-      localStorage.setItem("token", res.data.token);
+        // new token save
+        localStorage.setItem("token", res.data.token);
 
-      // user update
-      const updatedUser = {
-        ...user,
-        user_type: res.data.user_type
-      };
+        // user update
+        const updatedUser = {
+          ...user,
+          user_type: res.data.user_type
+        };
 
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      // redirect
+        // redirect
         navigate("/my-dashboard-mentor");
-      
 
+
+      }
+
+    } catch (error) {
+      console.log(error);
     }
-
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
   return (
     <>
@@ -249,6 +251,7 @@ const My_Profile = () => {
                       <input
                         type="date"
                         className="form-control"
+                        min="2015-01-01"
                         value={profile?.dob || ''}
                         onChange={(e) =>
                           setProfile({ ...profile, dob: e.target.value })
@@ -321,9 +324,6 @@ const My_Profile = () => {
               <div className="Button">
                 <button className="Save" onClick={handleSave}>
                   Save
-                </button>
-                <button className="Cancel">
-                  Cancel
                 </button>
               </div>
 

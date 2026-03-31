@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Mentee_Navigation from '../../components/mentee/Mentee_Navigation'
 import Mentee_Sidebar from '../../components/mentee/Mentee_Sidebar'
 import api from '../../api/axiosInstance';
+import { useNavigate } from "react-router-dom";
 
 const Notification_Mentor = () => {
-
+    
+    const navigate = useNavigate();
     const [notifications, setNotifications] = useState([]);
 
   const fetchNotifications = async () => {
@@ -29,6 +31,31 @@ const Notification_Mentor = () => {
   useEffect(() => {
   localStorage.setItem("notification_last_seen", new Date().toISOString());
 }, []);
+
+const handleNotificationClick = (item) => {
+
+  if (item.type === "community_comment" || item.type === "community_like") {
+    navigate(`/community-details/${item.referenceId}`);
+
+  } 
+  else if (item.type === "session_request") {
+    navigate("/all-upcoming-sessions");
+
+  } 
+  else if (item.type === "reschedule" || item.type === "session_response") {
+    navigate("/all-upcoming-sessions");
+
+  } 
+  else if (item.type === "session_reminder" || item.type === "session_started") {
+    navigate("/all-upcoming-sessions");
+
+  } 
+  else if (item.type === "chat_message") {
+    navigate(`/all-chats-mentee`);
+
+  }
+
+  };
 
   return (
     <>
