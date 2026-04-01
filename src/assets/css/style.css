@@ -233,7 +233,7 @@ header {
   border: 1px solid #fff;
   padding: 10px 24px;
   border-radius: 50px
-}
+} 
 
 .Header .navbar .nav-item.Download .nav-link {
   background: hsl(var(--primary));
@@ -4506,9 +4506,9 @@ body {
 
 
 /* MAIN BOX */
-.compact-login {
+/* .compact-login {
   padding: 3px !important;
-}
+} */
 
 /* HEADER */
 .compact-login .LoginHead {
@@ -4777,4 +4777,10 @@ body.modal-open {
 body.modal-open .modal-backdrop {
   width: 100% !important;
   height: 100% !important;
+}
+
+
+
+.modal-backdrop.show{
+  display: block !important;
 }
