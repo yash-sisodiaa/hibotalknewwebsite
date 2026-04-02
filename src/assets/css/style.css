@@ -28,6 +28,7 @@ body {
   font-size: 13px;
   background-color: hsl(var(--background));
   top: 0 !important;
+  min-height: auto !important;
 }
 
 
@@ -699,7 +700,8 @@ header {
   border-radius: 50%;
   text-align: center;
   line-height: 50px;
-  font-size: 20px
+  font-size: 20px;
+  z-index: 1;
 }
 
 .ProgramBox figcaption {
@@ -1645,6 +1647,9 @@ footer .Copyright p {
 
 .Navigation ul .profile a.dropdown-toggle .Icon {
   max-width: 30px;
+  max-height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .Navigation ul .profile .dropdown-menu {
@@ -1799,7 +1804,8 @@ footer .Copyright p {
 .WrapperArea {
   width: calc(100% - 260px);
   margin-left: 260px;
-  margin-top: 70px
+  margin-top: 70px;
+  overflow: hidden;
 }
 
 .WrapperArea .WrapperBox {
@@ -4564,9 +4570,9 @@ body {
 
 
 /* MAIN BOX */
-.compact-login {
+/* .compact-login {
   padding: 3px !important;
-}
+} */
 
 /* HEADER */
 .compact-login .LoginHead {
@@ -4834,8 +4840,4 @@ body.modal-open {
 body.modal-open .modal-backdrop {
   width: 100% !important;
   height: 100% !important;
-}
-
-.shadow {
-  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
 }

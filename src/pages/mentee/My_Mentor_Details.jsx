@@ -150,77 +150,74 @@ const My_Mentor_Details = () => {
             <div className="HistoryArea">
               <div className="HistoryHead">
                 <h3>Resources</h3>
-
               </div>
-              <div className="HistoryBody">
-                <div className="row">
-                  {
-                    resources.length > 0 ? (
-                      <div className="HistoryBody">
-                        <div className="row">
-                          {resources.map((item) => (
-                            <div className="col-sm-2" key={item.id}>
-                              <div className="ResourcesBox"
 
-                                onClick={() => Navigate(`/resource-details/${item.id}`)}
-                                style={{ cursor: "pointer" }}
-                              >
+              {
+                resources.length > 0 ? (
+                  <div className="HistoryBody">
+                    <div className="row">
+                      {resources.map((item) => (
+                        <div className="col-sm-2" key={item.id}>
+                          <div className="ResourcesBox"
 
-                                <figure>
-                                  {/* VIDEO */}
-                                  {item.resourceType === 'video' && (
-                                    <>
-                                      <span className="Play">
-                                        <i className="fa fa-play" aria-hidden="true"></i>
-                                      </span>
+                            onClick={() => Navigate(`/resource-details/${item.id}`)}
+                            style={{ cursor: "pointer" }}
+                          >
 
-                                      <img
-                                        src={item.thumbnailUrl || '/images/Program-1.png'}
-                                        alt={item.heading}
-                                      />
-                                    </>
+                            <figure>
+                              {/* VIDEO */}
+                              {item.resourceType === 'video' && (
+                                <>
+                                  <span className="Play">
+                                    <i className="fa fa-play" aria-hidden="true"></i>
+                                  </span>
+
+                                  <img
+                                    src={item.thumbnailUrl || '/images/Program-1.png'}
+                                    alt={item.heading}
+                                  />
+                                </>
+                              )}
+
+                              {/* PDF / PPT / DOC – CUSTOM ICON */}
+                              {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
+                                <div className="OnlyIcon">
+                                  {item.resourceType === 'pdf' && (
+                                    <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
                                   )}
 
-                                  {/* PDF / PPT / DOC – CUSTOM ICON */}
-                                  {(item.resourceType === 'pdf' || item.resourceType === 'ppt' || item.resourceType === 'doc') && (
-                                    <div className="OnlyIcon">
-                                      {item.resourceType === 'pdf' && (
-                                        <i className="fa fa-file-pdf-o PdfIcon" aria-hidden="true"></i>
-                                      )}
-
-                                      {item.resourceType === 'ppt' && (
-                                        <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
-                                      )}
-
-                                      {item.resourceType === 'doc' && (
-                                        <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
-                                      )}
-                                    </div>
+                                  {item.resourceType === 'ppt' && (
+                                    <i className="fa fa-file-powerpoint-o PptIcon" aria-hidden="true"></i>
                                   )}
 
-                                </figure>
+                                  {item.resourceType === 'doc' && (
+                                    <i className="fa fa-file-word-o DocIcon" aria-hidden="true"></i>
+                                  )}
+                                </div>
+                              )}
+
+                            </figure>
 
 
 
-                                <figcaption>
-                                  <p>{item.heading}</p>
-                                </figcaption>
+                            <figcaption>
+                              <p>{item.heading}</p>
+                            </figcaption>
 
-                              </div>
-                            </div>
-                          ))}
-
-
+                          </div>
                         </div>
-                      </div>
+                      ))}
 
-                    ) : (
-                      <p style={{ padding: '0 15px' }}>No resources found</p>
-                    )
-                  }
 
-                </div>
-              </div>
+                    </div>
+                  </div>
+
+                ) : (
+                  <p style={{ padding: '0 15px' }}>No resources found</p>
+                )
+              }
+
+
             </div>
 
             <div className="TestimonialArea Student">

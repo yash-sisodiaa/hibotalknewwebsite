@@ -121,7 +121,7 @@ const Home = () => {
 
   // Program Carousel Initialization
   useEffect(() => {
-    if (data[activeIndex].resources.length === 0) return;
+    if (data[activeIndex]?.resources.length === 0) return;
 
     const $slider = $('#ProgramSlider');
 
@@ -407,7 +407,7 @@ const Home = () => {
             <div className="ProgramBody">
               <div id="demos">
                 <div className="owl-carousel owl-theme" id="ProgramSlider" key={activeIndex}>
-                  {data[activeIndex].resources.slice(0, 5).map((res) => (
+                  {data[activeIndex]?.resources.slice(0, 5).map((res) => (
                     <div className="item" key={res.id}>
                       <div className="ProgramBox">
                         <Link to={`/program-resource/${res.id}`}>
