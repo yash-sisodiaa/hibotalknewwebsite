@@ -107,7 +107,7 @@ const Mentor_Sidebar = () => {
 
       <div className="modal fade" id="CallLink">
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div className="modal-content" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #555555 100%)" }}>
             <div className="LoginBox Resources">
               <div className="LoginHead">
                 <button type="button" className="Close" data-dismiss="modal">×</button>

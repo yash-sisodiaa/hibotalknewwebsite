@@ -288,11 +288,11 @@ const My_Community = () => {
 
                     <h3>
                       <span className="Icon">
-                        <img src={profilePic} alt="" />
+                        <img src={item?.mentor?.profile_pic} alt="" />
                       </span>
 
                       <span className="Name">
-                        {item?.mentor?.fullname}
+                        {user.fullname}
                       </span>
 
                       <span className="Time">
@@ -352,7 +352,7 @@ const My_Community = () => {
 
       <div className={`modal fade newclass ${showEditModal ? "show d-block" : ""}`} id="EditCommunityModal">
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div className="modal-content" >
             <div className="LoginBox Resources NewLoginBox">
               <div className="LoginHead">
                 <button
@@ -435,7 +435,7 @@ const My_Community = () => {
 
       <div className="modal fade" id="CommunityModal">
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div className="modal-content" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #555555 100%)" }}>
             <div className="LoginBox Resources">
               <div className="LoginHead">
                 <button

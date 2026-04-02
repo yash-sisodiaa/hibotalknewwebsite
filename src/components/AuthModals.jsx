@@ -1102,7 +1102,7 @@ const AuthModals = () => {
                       <h6
                         style={{
                           cursor: (resendTimer > 0 || isResending) ? 'not-allowed' : 'pointer',
-                          color: (resendTimer > 0 || isResending) ? '#999' : '#00e6d2'
+                          color: (resendTimer > 0 || isResending) ? '#fff' : '#00e6d2'
                         }}
                         onClick={() => {
                           if (resendTimer === 0 && !isResending) {
@@ -1365,7 +1365,7 @@ const AuthModals = () => {
                       <h6
                         style={{
                           cursor: (resendTimer > 0 || isResending) ? 'not-allowed' : 'pointer',
-                          color: (resendTimer > 0 || isResending) ? '#999' : '#00e6d2'
+                          color: (resendTimer > 0 || isResending) ? '#fff' : '#00e6d2'
                         }}
                         onClick={() => {
                           if (resendTimer === 0 && !isResending) {

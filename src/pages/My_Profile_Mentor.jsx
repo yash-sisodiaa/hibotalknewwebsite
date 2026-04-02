@@ -3,6 +3,7 @@ import api from '../api/axiosInstance';
 import Mentor_Navigation from '../components/mentors/Mentor_Navigation';
 import Mentor_Sidebar from '../components/mentors/Mentor_Sidebar';
 import { useNavigate } from 'react-router-dom';
+import ImageCropperModal from '../components/common/ImageCropperModal';
 
 
 const My_Profile_Mentor = () => {
@@ -14,6 +15,7 @@ const My_Profile_Mentor = () => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [specializations, setSpecializations] = useState([]);
   const [profilePic, setProfilePic] = useState(null);
+  const [imageToCrop, setImageToCrop] = useState(null);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
 
@@ -126,7 +128,7 @@ const My_Profile_Mentor = () => {
       formData.append('experience', profile.experience);
 
       if (profilePic) {
-        formData.append('profile_pic', profilePic);
+        formData.append('profile_pic', profilePic, 'profile.jpg');
       }
 
       const res = await api.put('/edit-profile', formData, {
@@ -276,7 +278,15 @@ const My_Profile_Mentor = () => {
                     type="file"
                     accept="image/*"
                     style={{ display: 'none' }}
-                    onChange={(e) => setProfilePic(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const reader = new FileReader();
+                        reader.addEventListener('load', () => setImageToCrop(reader.result));
+                        reader.readAsDataURL(e.target.files[0]);
+                        // reset value to allow selecting same file again
+                        e.target.value = null;
+                      }
+                    }}
                   />
                 </label>
               </figure>
@@ -479,6 +489,17 @@ const My_Profile_Mentor = () => {
           </div>
         </div>
       </div>
+
+      {imageToCrop && (
+        <ImageCropperModal
+          imageSrc={imageToCrop}
+          onCropDone={(croppedImageBlob) => {
+            setProfilePic(croppedImageBlob);
+            setImageToCrop(null);
+          }}
+          onCropCancel={() => setImageToCrop(null)}
+        />
+      )}
 
       <div className="modal fade" data-backdrop="static" id="MenteeModal">
         <div className="modal-dialog">

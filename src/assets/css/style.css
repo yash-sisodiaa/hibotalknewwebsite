@@ -14,6 +14,7 @@
   --primary-gradient: linear-gradient(360deg,
       #0D938E 0%,
       #28C2B7 73.21%);
+  --background: 240 10% 4%;
 }
 
 html {
@@ -25,7 +26,7 @@ body {
   padding: 0;
   font-family: "Space Grotesk Variable", sans-serif !important;
   font-size: 13px;
-  background-color: #fff;
+  background-color: hsl(var(--background));
   top: 0 !important;
 }
 
@@ -76,6 +77,7 @@ h6,
 p {
   margin: 0;
   padding: 0;
+  color: #fff;
 }
 
 ul,
@@ -185,7 +187,7 @@ header {
 }
 
 .Header {
-  background-color: #2D313A;
+  background-color: hsl(var(--background));
   padding: 15px 0;
 
 }
@@ -308,7 +310,7 @@ header {
 }
 
 .SlideArea {
-  background-color: #2D313A;
+  background-color: hsl(var(--background));
   padding: 50px 0
 }
 
@@ -592,7 +594,7 @@ header {
 }
 
 .ProgramArea .ProgramHead h2 {
-  color: #2D313A;
+  color: #fff;
   font-weight: 600;
   font-size: 40px;
   margin: 0 0 16px 0;
@@ -646,8 +648,9 @@ header {
 }
 
 .ProgramBox {
-  background-color: #2D313A;
+  background-color: hsl(var(--primary) / .05);
   border-radius: 10px;
+  border-color: hsl(var(--primary) / .2);
   overflow: hidden;
   margin: 0 0 30px 0
 }
@@ -731,7 +734,7 @@ header {
 }
 
 .InspiresArea {
-  background: linear-gradient(180deg, #FEFFFF 0%, #BFEAE6 100%);
+  background-color: hsl(var(--primary) / .03);
   padding: 50px 0 20px
 }
 
@@ -742,7 +745,7 @@ header {
 
 .InspiresArea .InspiresHead h2 {
   font-size: 35px;
-  color: #2D313A;
+  color: #fff;
   font-weight: 600;
   margin: 0 0 15px 0;
   font-style: italic;
@@ -776,7 +779,7 @@ header {
 
 .InspiresBox {
   margin: 0 0 30px 0;
-  background-color: #2D313A;
+  background-color: #FFFFFF05;
   border-radius: 15px;
   overflow: hidden
 }
@@ -861,7 +864,7 @@ header {
 }
 
 .TestimonialArea .TestimonialHead h3 {
-  color: #2D313A;
+  color: #fff;
   font-size: 36px;
   font-weight: 600;
   margin: 0 0 15px 0;
@@ -893,7 +896,7 @@ header {
 }
 
 .TestimonialBox {
-  background-color: #2D313A;
+  background-color: hsl(var(--primary) / .05);
   padding: 20px;
   border-radius: 15px;
   color: #fff;
@@ -946,7 +949,7 @@ header {
 }
 
 .TestimonialArea.Student .TestimonialHead h4 {
-  color: #134E4D;
+  color: #fff;
   font-size: 26px;
   font-weight: 600
 }
@@ -1024,11 +1027,12 @@ header {
 }
 
 .GuidanceArea {
+  background-color: hsl(var(--primary) / .05);
   padding: 150px 0 50px 0
 }
 
 .GuidanceArea .GuidanceBox {
-  background: linear-gradient(180deg, rgb(191 234 230 / .2) 0%, #FFFFFF 50%, #BFEAE6 100%);
+  background: linear-gradient(5deg, rgb(191 234 230 / .2) 0%, #FFFFFF 50%, #BFEAE6 100%);
   padding: 60px;
   padding-bottom: 0;
   border-radius: 10px
@@ -1072,7 +1076,7 @@ header {
 }
 
 footer {
-  background-color: #2D313A
+  background-color: hsl(var(--background));
 }
 
 footer .Footer {
@@ -1301,7 +1305,7 @@ footer .Copyright p {
 }
 
 .ContactArea .ContactBox {
-  background-color: #F1FEFB;
+  background-color: hsl(var(--primary) / .03);
   padding: 40px;
   border-radius: 20px;
   min-height: 1000px;
@@ -1312,7 +1316,7 @@ footer .Copyright p {
   text-align: center;
   font-size: 28px;
   font-weight: 600;
-  color: #2D313A;
+  color: #fff;
   margin: 0 0 5px 0;
   font-style: italic;
 }
@@ -1341,7 +1345,8 @@ footer .Copyright p {
   font-size: 15px;
   height: auto;
   box-shadow: none;
-  outline: none
+  outline: none;
+  background: #000;
 }
 
 .ContactArea .ContactBox form .form-group textarea.form-control {
@@ -1376,7 +1381,7 @@ footer .Copyright p {
 }
 
 .DetailsArea {
-  background-color: #FCFCFC;
+  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
   padding: 50px 0
 }
 
@@ -1799,7 +1804,7 @@ footer .Copyright p {
 
 .WrapperArea .WrapperBox {
   padding: 20px;
-  background: linear-gradient(180deg, #FFFFFF 0%, #bfeae663 100%);
+  background: hsl(var(--background));
   min-height: calc(100vh - 70px);
 }
 
@@ -1815,7 +1820,7 @@ footer .Copyright p {
 .TitleBox h3 {
   font-size: 22px;
   font-weight: 600;
-  color: #000;
+  color: #fff;
   text-transform: capitalize;
   font-style: italic;
 }
@@ -1846,7 +1851,7 @@ footer .Copyright p {
 .SessionsArea {
   border: 1px solid #ddd;
   padding: 20px;
-  background-color: #fff;
+  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
   border-radius: 10px
 }
 
@@ -1880,7 +1885,7 @@ footer .Copyright p {
 .HistoryArea .HistoryHead h3 {
   margin-bottom: 20px;
   font-size: 20px;
-  color: #134E4D;
+  color: #fff;
   font-weight: 600;
   font-style: italic;
 }
@@ -2001,7 +2006,7 @@ footer .Copyright p {
 }
 
 .ResourcesBox .Icon i {
-  color: #000;
+  color: #fff;
   cursor: pointer;
   outline: none;
 }
@@ -2099,7 +2104,7 @@ footer .Copyright p {
 .MontorArea {
   border: 1px solid #ddd;
   padding: 20px;
-  background-color: #fff;
+  background-color: hsl(var(--background));
   border-radius: 10px;
   box-shadow: 0 2px 6px #ddd
 }
@@ -2134,11 +2139,11 @@ footer .Copyright p {
   font-size: 20px;
   margin: 0 0 10px 0;
   font-weight: 500;
-  color: #000
+  color: #fff
 }
 
 .MontorArea .MontorName figcaption h3 span.Rate {
-  color: #0C0E0F;
+  color: #fff;
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 0 10px
@@ -2155,7 +2160,7 @@ footer .Copyright p {
 .MontorArea .MontorName figcaption h6 {
   font-size: 13px;
   margin: 0 0 5px 0;
-  color: #0C0E0F;
+  color: #fff;
   font-weight: 400
 }
 
@@ -2273,7 +2278,7 @@ footer .Copyright p {
 .MontorArea .Notification ol li h6 {
   font-size: 16px;
   font-weight: 500;
-  color: #0C0E0F;
+  color: #fff;
   margin: 0 0 5px 0
 }
 
@@ -2378,7 +2383,7 @@ footer .Copyright p {
 }
 
 .CommunityDetailsArea .CommunityBox {
-  background-color: #fff
+  background-color: #6D6C6C
 }
 
 .CommunityDetailsArea .CommunityBox h3 {
@@ -2438,11 +2443,11 @@ footer .Copyright p {
 
 .CommentBox ul li figcaption h5 {
   font-size: 16px;
-  color: #605D64
+  color: #fff
 }
 
 .CommentBox ul li figcaption p {
-  color: #605D64;
+  color: #fff;
   margin: 0 0 5px 0
 }
 
@@ -2454,7 +2459,7 @@ footer .Copyright p {
 
 .CommentBox ul li figcaption h6 strong {
   font-weight: 600;
-  color: #605D64
+  color: #fff
 }
 
 .CommentBox ul li figcaption h6 a {
@@ -2474,7 +2479,7 @@ footer .Copyright p {
 }
 
 .CommentBox ul li aside strong {
-  color: #605D64;
+  color: #fff;
   font-size: 14px;
   font-weight: 700
 }
@@ -2692,7 +2697,7 @@ footer .Copyright p {
 
 .ChatArea .ChatLeft {
   box-shadow: 4px 0 4px 0 #0000000A;
-  background: #E8FFFD;
+  background: linear-gradient(180deg, #ffffff 0%, #cccccc 50%, #000000 100%);
   width: 325px;
   padding: 10px
 }
@@ -2784,7 +2789,8 @@ footer .Copyright p {
 .ChatArea .ChatLeft ul li .UserBox h6 {
   font-size: 15px;
   margin: 0 0 5px;
-  font-weight: 600
+  font-weight: 600;
+  color: #000;
 }
 
 .ChatArea .ChatLeft ul li .UserBox p {
@@ -2814,7 +2820,7 @@ footer .Copyright p {
 
 .ChatArea .ChatRight .ChatHead {
   box-shadow: 0 4px 4px 0 #0000000A;
-  background-color: #E8FFFD;
+  background-color: #fff;
   padding: 20px 20px
 }
 
@@ -2931,7 +2937,7 @@ footer .Copyright p {
   padding: 0px 55px 0px 0px;
   font-weight: 500;
   font-size: 16px;
-  color: #000000;
+  color: #fff;
   float: right;
   min-width: 285px;
   min-height: 30px;
@@ -2987,7 +2993,7 @@ footer .Copyright p {
   margin: 0 0 15px 0;
   font-weight: 600;
   font-size: 18px;
-  color: #000;
+  color: #fff;
 }
 
 .MontorArea .MontorInfo .form-group {
@@ -2997,7 +3003,8 @@ footer .Copyright p {
 
 .MontorArea .MontorInfo .form-group label {
   display: block;
-  color: #042E2F;
+  background-color: #000;
+  color: #fff;
   font-size: 15px;
   font-weight: 500;
   margin: 0 0 10px 0;
@@ -3088,7 +3095,7 @@ footer .Copyright p {
 .MentorsArea .TestimonialArea.Student .TestimonialHead h4 {
   margin-bottom: 20px;
   font-size: 22px;
-  color: #134E4D;
+  color: #fff;
   font-weight: 600;
 }
 
@@ -3097,7 +3104,7 @@ footer .Copyright p {
   text-align: center;
   height: calc(100% - 20px);
   border-radius: 10px;
-  background: linear-gradient(180deg, #FFFFFF 0%, #BFEAE6 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #000000 100%);
   border: 1px solid #E3E3E3;
   box-shadow: 0px 2px 4px 0px #00000017;
   cursor: pointer;
@@ -3123,7 +3130,7 @@ footer .Copyright p {
   width: 100%;
   font-size: 16px;
   font-weight: 500;
-  color: #000;
+  color: #fff;
   margin: 2px 0px 0px -25px;
 }
 
@@ -3137,7 +3144,7 @@ footer .Copyright p {
 .HelpArea .HelpHead h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #2D313A;
+  color: #fff;
   margin: 0 0 5px 0;
   font-style: italic;
 }
@@ -3240,7 +3247,7 @@ footer .Copyright p {
 }
 
 .HelpArea .HelpBody .card .FAQContent {
-  color: #000;
+  color: #fff;
   padding: 20px;
   border-top: 1px solid #ddd;
 }
@@ -3252,8 +3259,8 @@ footer .Copyright p {
 
 
 .ReadyArea {
-  background-color: #2D313A;
-  padding: 70px 0;
+  background-color: hsl(var(--primary) / .03);
+  padding: 104px 0;
 }
 
 .ReadyArea .ReadyLeft h1 {
@@ -3309,17 +3316,23 @@ footer .Copyright p {
 .StoryArea h2 {
   font-size: 30px;
   font-weight: 600;
-  color: #2D313A;
+  color: #fff;
   margin: 0 0 20px 0;
   font-style: italic;
 }
 
 .StoryArea .StoryBox {
   color: #fff;
-  background: #2d313a;
+  background: #FFFFFF05;
   padding: 30px;
   border-radius: 10px;
   margin: 0 0 30px 0;
+  border: 1px solid #ffffff1a;
+  transition: all 0.3s ease;
+}
+
+.StoryArea .StoryBox:hover {
+  border-color: #00e6d2;
 }
 
 .StoryArea .StoryBox h3 {
@@ -3334,6 +3347,14 @@ footer .Copyright p {
   margin: 0 15px 0 0;
 }
 
+.StoryArea .StoryBox h3 span img {
+  transition: all 0.3s ease;
+}
+
+.StoryArea .StoryBox:hover h3 span img {
+  transform: scale(1.1);
+}
+
 .StoryArea .StoryBox p {
   font-size: 15px;
   line-height: 27px;
@@ -3343,7 +3364,7 @@ footer .Copyright p {
 
 
 .ChooseArea {
-  background-color: #2D313A;
+  background-color: hsl(var(--primary) / .03);
   padding: 70px 0;
   position: relative;
 }
@@ -3363,10 +3384,16 @@ footer .Copyright p {
 }
 
 .ChooseArea .ChooseLeft aside {
-  background-color: #F1FEFB;
+  background-color: #FFFFFF05;
   margin: 30px 0 0px 0;
   padding: 20px 20px 20px 100px;
   border-radius: 16px;
+  border: 1px solid #ffffff1a;
+  transition: all 0.3s ease;
+}
+
+.ChooseArea .ChooseLeft aside:hover {
+  border-color: #00e6d2;
 }
 
 .ChooseArea .ChooseLeft aside .Icon {
@@ -3376,16 +3403,25 @@ footer .Copyright p {
   max-width: 65px;
 }
 
+.ChooseArea .ChooseLeft aside .Icon img {
+  transition: all 0.3s ease;
+}
+
+.ChooseArea .ChooseLeft aside:hover .Icon img {
+  transform: scale(1.1);
+}
+
 .ChooseArea .ChooseLeft aside h3 {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 5px 0;
   font-style: italic;
+  color: #fff;
 }
 
 .ChooseArea .ChooseLeft aside p {
   font-size: 18px;
-  color: #000;
+  color: #A1A1AA;
 }
 
 .ChooseArea .ChooseRight {
@@ -3398,7 +3434,7 @@ footer .Copyright p {
 .ChooseArea .ChooseRight img {}
 
 .ImpactArea {
-  background: linear-gradient(180deg, rgb(191 234 230 / .2) 0%, #FFFFFF 50%, #BFEAE6 100%);
+  background: linear-gradient(150deg, rgb(191 234 230 / .2) 0%, #FFFFFF 50%, #BFEAE6 100%);
   padding: 90px 0 30px;
 }
 
@@ -3417,6 +3453,12 @@ footer .Copyright p {
   padding: 40px 30px;
   border-radius: 10px;
   margin: 0 0 30px 0;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.ImpactArea .ImpactBox:hover {
+  border-color: #00e6d2;
 }
 
 .ImpactArea .ImpactBox h3 {
@@ -3442,7 +3484,7 @@ footer .Copyright p {
 .MissionArea .MissionBox {}
 
 .MissionArea .MissionBox h2 {
-  color: #2D313A;
+  color: #fff;
   font-weight: 600;
   font-size: 30px;
   margin: 0 0 10px 0;
@@ -3454,17 +3496,31 @@ footer .Copyright p {
 }
 
 .MissionArea .VisionBox {
-  background-color: #2D313A;
+  background-color: #FFFFFF05;
   text-align: center;
   color: #fff;
   padding: 40px 30px;
   border-radius: 10px;
   margin: 0 0 30px 0;
+  border: 1px solid #ffffff1a;
+  transition: all 0.3s ease;
+}
+
+.MissionArea .VisionBox:hover {
+  border-color: #00e6d2;
 }
 
 .MissionArea .VisionBox span {
   display: inline-block;
   max-width: 65px;
+}
+
+.MissionArea .VisionBox span img {
+  transition: all 0.3s ease;
+}
+
+.MissionArea .VisionBox:hover span img {
+  transform: scale(1.1);
 }
 
 .MissionArea .VisionBox h3 {
@@ -3510,7 +3566,7 @@ footer .Copyright p {
 }
 
 .ModalBox .modal-dialog .modal-content {
-  background: linear-gradient(180deg, #FFFFFF 0%, #BFEAE6 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
   border: none;
   box-shadow: none;
   border-radius: 10px
@@ -3558,7 +3614,7 @@ footer .Copyright p {
 .LoginBox .LoginHead p {
   font-size: 14px;
   font-weight: 400;
-  color: #A1A1AA;
+  color: #000;
 }
 
 .LoginBox .LoginBody {
@@ -3772,7 +3828,7 @@ footer .Copyright p {
 }
 
 .LoginBox .LoginFoot h6 a {
-  color: #016E66
+  color: #fff
 }
 
 .LoginBox .LoginFoot ul {
@@ -3809,13 +3865,13 @@ footer .Copyright p {
 .LoginBox .LoginFoot p span {
   width: 40px;
   display: inline-block;
-  background: #d1f0ed;
+  background: #000;
   z-index: 9;
   position: relative
 }
 
 .LoginBox .LoginFoot h5 {
-  color: #595F65;
+  color: #fff;
   font-size: 15px;
   font-weight: 500
 }
@@ -4202,6 +4258,7 @@ footer .Copyright p {
 .week-days div {
   font-weight: 600;
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .calendar-day {
@@ -4209,6 +4266,7 @@ footer .Copyright p {
   cursor: pointer;
   border-radius: 10px;
   transition: 0.3s;
+  color: #fff;
 }
 
 .calendar-day:hover {
@@ -4407,7 +4465,7 @@ body {
 }
 
 .reviewContent {
-  background: #fff;
+  background: #000;
   padding: 30px;
   border-radius: 15px;
   width: 400px;
@@ -4485,7 +4543,7 @@ body {
 }
 
 .newclass .modal-content {
-  background: linear-gradient(180deg, #FFFFFF 0%, #BFEAE6 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
   border: none;
   box-shadow: none;
   border-radius: 10px;
@@ -4611,7 +4669,7 @@ body {
 }
 
 .faq-black .card .card-header:after {
-  color: #000 !important;
+  color: #fff !important;
 }
 
 .newDropdownMenu {
@@ -4657,7 +4715,6 @@ body {
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  z-index: 10;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -4777,4 +4834,8 @@ body.modal-open {
 body.modal-open .modal-backdrop {
   width: 100% !important;
   height: 100% !important;
+}
+
+.shadow {
+  background: linear-gradient(180deg, #FFFFFF 0%, #555555 100%);
 }

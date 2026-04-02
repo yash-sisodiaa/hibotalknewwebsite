@@ -43,19 +43,19 @@ const About = () => {
                             <div className="col-sm-4">
                                 <div className="StoryBox">
                                     <h3><span><img src="images/Story-1.png" /> </span> Why We Started </h3>
-                                    <p>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
+                                    <p style={{ color: '#A1A1AA' }}>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
                                 </div>
                             </div>
                             <div className="col-sm-4">
                                 <div className="StoryBox">
                                     <h3><span><img src="images/Story-2.png" /> </span> What We Believe  </h3>
-                                    <p>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
+                                    <p style={{ color: '#A1A1AA' }}>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
                                 </div>
                             </div>
                             <div className="col-sm-4">
                                 <div className="StoryBox">
                                     <h3><span><img src="images/Story-3.png" /> </span> Who We Serve</h3>
-                                    <p>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
+                                    <p style={{ color: '#A1A1AA' }}>The app connects young talents with experienced professionals, offering real-life insights, confidence, and courage. But it’s more than career guidance.</p>
                                 </div>
                             </div>
                         </div>

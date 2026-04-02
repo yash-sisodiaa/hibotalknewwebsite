@@ -3,6 +3,7 @@ import api from '../../api/axiosInstance';
 import Mentee_Navigation from '../../components/mentee/Mentee_Navigation';
 import Mentee_Sidebar from '../../components/mentee/Mentee_Sidebar';
 import { useNavigate } from 'react-router-dom';
+import ImageCropperModal from '../../components/common/ImageCropperModal';
 
 const My_Profile = () => {
 
@@ -14,6 +15,7 @@ const My_Profile = () => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [specializations, setSpecializations] = useState([]);
   const [profilePic, setProfilePic] = useState(null);
+  const [imageToCrop, setImageToCrop] = useState(null);
 
 
   // 2016-01-21 → 21/01/2016
@@ -104,7 +106,7 @@ const My_Profile = () => {
       formData.append('intrested', selectedIds.join(','));
 
       if (profilePic) {
-        formData.append('profile_pic', profilePic);
+        formData.append('profile_pic', profilePic, 'profile.jpg');
       }
 
       const res = await api.put('/edit-profile', formData, {
@@ -191,7 +193,15 @@ const My_Profile = () => {
                     type="file"
                     accept="image/*"
                     style={{ display: 'none' }}
-                    onChange={(e) => setProfilePic(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const reader = new FileReader();
+                        reader.addEventListener('load', () => setImageToCrop(reader.result));
+                        reader.readAsDataURL(e.target.files[0]);
+                        // reset value to allow selecting same file again
+                        e.target.value = null;
+                      }
+                    }}
                   />
                 </label>
               </figure>
@@ -331,6 +341,17 @@ const My_Profile = () => {
           </div>
         </div>
       </div>
+
+      {imageToCrop && (
+        <ImageCropperModal
+          imageSrc={imageToCrop}
+          onCropDone={(croppedImageBlob) => {
+            setProfilePic(croppedImageBlob);
+            setImageToCrop(null);
+          }}
+          onCropCancel={() => setImageToCrop(null)}
+        />
+      )}
     </>
   );
 };

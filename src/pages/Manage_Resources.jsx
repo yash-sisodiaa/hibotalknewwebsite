@@ -318,6 +318,7 @@ const Manage_Resources = () => {
                     <div className="ActionWrapper">
                       <button
                         className="DotsBtn"
+                        style={{ color: "white" }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveMenu(activeMenu === item.id ? null : item.id);
@@ -415,6 +416,7 @@ const Manage_Resources = () => {
                     <div className="ActionWrapper">
                       <button
                         className="DotsBtn"
+                        style={{ color: "white" }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveMenu(activeMenu === item.id ? null : item.id);

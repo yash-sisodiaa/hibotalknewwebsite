@@ -658,10 +658,10 @@ header {
   font-weight: 400
 }
 
-.InspiresArea {
+/* .InspiresArea {
   background: linear-gradient(180deg, #FEFFFF 0%, #BFEAE6 100%);
   padding: 50px 0 20px
-}
+} */
 
 .InspiresArea .InspiresHead {
   text-align: center;
@@ -1155,7 +1155,7 @@ footer .Copyright p {
 
 
 .ChooseArea {
-  background-color: #2D313A;
+  background-color: hsl(var(--primary/0.05));
   padding: 70px 0;
   position: relative;
 }

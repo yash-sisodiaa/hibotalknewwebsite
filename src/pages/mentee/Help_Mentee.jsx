@@ -211,7 +211,7 @@ const Help_Mentee = () => {
                     >
                       <div className="card-body">
                         <div className="FAQContent">
-                          <p>{item.a}</p>
+                          <p style={{ color: "#000" }}>{item.a}</p>
                         </div>
                       </div>
                     </div>

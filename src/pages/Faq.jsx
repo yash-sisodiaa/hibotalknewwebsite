@@ -57,10 +57,10 @@ const Faq = () => {
             <Header />
 
             <section>
-                <div className="FAQArea faq-black" style={{ background: "white", color: "#000" }}>
+                <div className="FAQArea faq-black" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #555555 100%);" }}>
                     <div className="container-fluid">
 
-                        <h3 style={{ color: "#000" }}>Frequently Asked Questions</h3>
+                        <h3>Frequently Asked Questions</h3>
 
                         <div id="accordion">
                             {faqs.map((item, index) => (
@@ -70,9 +70,9 @@ const Faq = () => {
                                         className="card-header collapsed"
                                         data-toggle="collapse"
                                         href={`#collapse${index}`}
-                                        style={{ color: "#000" }}
+
                                     >
-                                        <h6 style={{ color: "#000", margin: 0 }}>
+                                        <h6 style={{ margin: 0 }}>
                                             {item.q}
                                         </h6>
                                     </div>
@@ -82,9 +82,9 @@ const Faq = () => {
                                         className="collapse"
                                         data-parent="#accordion"
                                     >
-                                        <div className="card-body" style={{ color: "#000" }}>
+                                        <div className="card-body" >
                                             <div className="FAQContent">
-                                                <p style={{ color: "#000", margin: 0 }}>
+                                                <p style={{ margin: 0 }}>
                                                     {item.a}
                                                 </p>
                                             </div>
