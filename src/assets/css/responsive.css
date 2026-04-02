@@ -419,6 +419,10 @@
     font-weight: 600;
   }
 
+  .DashboardButton{
+    margin-top: 15px;
+  }
+
   /* History Area */
   .HistoryArea .HistoryHead {
     margin: 0 0 20px 0;
@@ -875,6 +879,9 @@
   .CommentBox ul li figcaption {
     width: 100%;
   }
+
+  .ResourcesBox figure{ min-height: 125px;  text-align: center; height: auto; }
+
 }
 
 
@@ -1165,7 +1172,7 @@
 
   /* Dashboard - Wrapper */
   .WrapperArea .WrapperBox {
-    padding: 10px;
+    /* padding: 10px; */
     min-height: calc(100vh - 70px);
   }
 
@@ -1318,6 +1325,15 @@
     padding: 6px 12px;
     font-size: 12px;
   }
+
+  .MontorArea .MontorInfo .form-group details div{
+    position: relative !important;
+  }
+
+  .modal-dialog{
+    margin: 20px;
+  }
+
 }
 
 
@@ -1805,11 +1821,13 @@
 
   /* Add Box */
   .AddBox {
-    min-height: 120px;
+    min-height: 225px;
+    margin-bottom: 20px;
   }
 
   .AddBox p {
     font-size: 14px;
+    margin: 0;
   }
 
   /* Profile */

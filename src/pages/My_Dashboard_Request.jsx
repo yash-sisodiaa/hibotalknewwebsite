@@ -70,11 +70,11 @@ const My_Dashboard_Request = () => {
       const res = await api.get(
         `/session/profile/${menteeId}`
       );
-       setSelectedProfile(res.data.mentee);
+      setSelectedProfile(res.data.mentee);
 
       const resourcesRes = await api.get(`/completed-courses/${menteeId}`);
       setCompletedCourses(resourcesRes.data.data);
-      
+
       setShowProfileModal(true);
     } catch (error) {
       console.error(error);
@@ -94,128 +94,129 @@ const My_Dashboard_Request = () => {
 
           <div className="DashboardArea">
             <div className="row">
-
               {loading ? (
-                <p>Loading...</p>
+                <div className="col-sm-12">
+                  <p>Loading...</p>
+                </div>
+
               ) : sessions.length === 0 ? (
-                <p>No pending requests</p>
+                <div className="col-sm-12">
+                  <p>No pending requests</p>
+                </div>
+
               ) : (
-                sessions
-                  .filter((s) => s.status === "pending")
-                  .map((session) => (
-                    <div
-                      key={session.id}
-                      className="col-lg-4 col-md-6 col-sm-6"
-                    >
-                      <div className="RequestBox">
-                        <aside>
-                          <span className="Icon">
-                            <img
-                              src={session.mentee.profile_pic || '/images/person-icon-png-12.jpg'}
-                              alt=""
-                            />
-                          </span>
+                sessions.filter((s) => s.status === "pending").map((session) => (
+                  <div
+                    key={session.id}
+                    className="col-lg-4 col-md-6 col-sm-6"
+                  >
+                    <div className="RequestBox">
+                      <aside>
+                        <span className="Icon">
+                          <img
+                            src={session.mentee.profile_pic || '/images/person-icon-png-12.jpg'}
+                            alt=""
+                          />
+                        </span>
 
-                          <h4>
-                            {session.mentee.fullname}
-                          </h4>
+                        <h4>
+                          {session.mentee.fullname}
+                        </h4>
 
-                          <p>
-                            {session.localDate} |{" "}
-                            {session.localTime}
-                          </p>
+                        <p>
+                          {session.localDate} |{" "}
+                          {session.localTime}
+                        </p>
 
-                          <div className={`dropdown ${openId === session.id ? "show" : ""}`}>
-  
-                            <a
-                                href="/"
-                                id="navbardrop"
-                                onClick={(e) => {
-                                e.preventDefault();
-                                setOpenId(openId === session.id ? null : session.id);
-                                }}
-                            >
-                                <img src="images/Dots.png" alt="" />
-                            </a>
+                        <div className={`dropdown ${openId === session.id ? "show" : ""}`}>
 
-                            <div
-                                className={`dropdown-menu ${
-                                openId === session.id ? "show" : ""
-                                }`}
-                            >
-                                <ol>
-                                <li>
-                                    <a
-                                    href="/"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleViewProfile(session.mentee.id);
-                                        setOpenId(null);
-                                    }}
-                                    >
-                                    View Profile
-                                    </a>
-                                </li>
+                          <a
+                            href="/"
+                            id="navbardrop"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpenId(openId === session.id ? null : session.id);
+                            }}
+                          >
+                            <img src="images/Dots.png" alt="" />
+                          </a>
 
-                                <li>
-                                    <a
-                                    href="/"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleCancel(session.id);
-                                        setOpenId(null);
-                                    }}
-                                    >
-                                    Cancel Session
-                                    </a>
-                                </li>
-                                </ol>
-                            </div>
-                            </div>
-                        </aside>
+                          <div
+                            className={`dropdown-menu ${openId === session.id ? "show" : ""
+                              }`}
+                          >
+                            <ol>
+                              <li>
+                                <a
+                                  href="/"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleViewProfile(session.mentee.id);
+                                    setOpenId(null);
+                                  }}
+                                >
+                                  View Profile
+                                </a>
+                              </li>
 
-                        <article>
-                          <p>
-                            {session.description}
-                          </p>
+                              <li>
+                                <a
+                                  href="/"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleCancel(session.id);
+                                    setOpenId(null);
+                                  }}
+                                >
+                                  Cancel Session
+                                </a>
+                              </li>
+                            </ol>
+                          </div>
+                        </div>
+                      </aside>
 
-                          <ul>
-                            <li>
-                              <button
-                                className="Chat"
-                                onClick={() =>
-                                  navigate(
-                                    `/chat-with-mentee/${session.mentee.id}`, {
-                                    state: {
-                                        mentorName: session.mentee?.fullname,
-                                    }
-                                    }
-                                  )
+                      <article>
+                        <p>
+                          {session.description}
+                        </p>
+
+                        <ul>
+                          <li>
+                            <button
+                              className="Chat"
+                              onClick={() =>
+                                navigate(
+                                  `/chat-with-mentee/${session.mentee.id}`, {
+                                  state: {
+                                    mentorName: session.mentee?.fullname,
+                                  }
                                 }
-                              >
-                                Chat
-                              </button>
-                            </li>
+                                )
+                              }
+                            >
+                              Chat
+                            </button>
+                          </li>
 
-                            <li>
-                              <button
-                                className="Accept"
-                                onClick={() =>
-                                  handleAccept(
-                                    session.id
-                                  )
-                                }
-                              >
-                                Accept
-                              </button>
-                            </li>
-                          </ul>
-                        </article>
-                      </div>
+                          <li>
+                            <button
+                              className="Accept"
+                              onClick={() =>
+                                handleAccept(
+                                  session.id
+                                )
+                              }
+                            >
+                              Accept
+                            </button>
+                          </li>
+                        </ul>
+                      </article>
                     </div>
-                  ))
+                  </div>
+                ))
               )}
-
             </div>
           </div>
         </div>
@@ -223,127 +224,127 @@ const My_Dashboard_Request = () => {
 
       {/* ================= PROFILE MODAL ================= */}
       {showProfileModal && selectedProfile && (
-  <div className="ModalBox">
-    <div className="modal fade show d-block">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="LoginBox Profile">
-            
-            <div className="LoginHead">
-              <button
-                type="button"
-                className="Close"
-                onClick={() => setShowProfileModal(false)}
-              >
-                ×
-              </button>
-            </div>
+        <div className="ModalBox">
+          <div className="modal fade show d-block">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="LoginBox Profile">
 
-            {/* ===== Profile Info ===== */}
-            <div className="ProfileInfo">
-              <span className="Icon">
-                <img
-                  src={selectedProfile.profile_pic || '/images/person-icon-png-12.jpg'}
-                  alt=""
-                />
-              </span>
+                  <div className="LoginHead">
+                    <button
+                      type="button"
+                      className="Close"
+                      onClick={() => setShowProfileModal(false)}
+                    >
+                      ×
+                    </button>
+                  </div>
 
-              <h4>{selectedProfile.fullname}</h4>
+                  {/* ===== Profile Info ===== */}
+                  <div className="ProfileInfo">
+                    <span className="Icon">
+                      <img
+                        src={selectedProfile.profile_pic || '/images/person-icon-png-12.jpg'}
+                        alt=""
+                      />
+                    </span>
 
-              
-              <h6>{selectedProfile.location}</h6>
+                    <h4>{selectedProfile.fullname}</h4>
 
-              <p>{selectedProfile.bio}</p>
 
-              {/* <button>Start Chat</button> */}
-            </div>
+                    <h6>{selectedProfile.location}</h6>
 
-            {/*Finished Courses */}
-            <div className="ProfileCourses">
-            <h4>Finished Courses</h4>
-            
-            <div className="row">
-                {completedCourses.length > 0 ? (
-                completedCourses.map((item) => {
-                    const resource = item.resource;
+                    <p>{selectedProfile.bio}</p>
 
-                    return (
-                    <div className="col-sm-3" key={item.id}>
-                        <div
-                        className="ResourcesBox"
-                          onClick={() =>
-                            navigate(`/resource-mentor-details/${resource.id}`)
-                          }
-                        style={{ cursor: "pointer" }}
-                        >
-                        <figure>
+                    {/* <button>Start Chat</button> */}
+                  </div>
 
-                            {/* VIDEO */}
-                            {resource.resourceType === "video" && (
-                            <>
-                                <span className="Play">
-                                <i className="fa fa-play" />
-                                </span>
+                  {/*Finished Courses */}
+                  <div className="ProfileCourses">
+                    <h4>Finished Courses</h4>
 
-                                <img
-                                src={
-                                    resource.thumbnailUrl ||
-                                    "images/Mentors.png"
+                    <div className="row">
+                      {completedCourses.length > 0 ? (
+                        completedCourses.map((item) => {
+                          const resource = item.resource;
+
+                          return (
+                            <div className="col-sm-3" key={item.id}>
+                              <div
+                                className="ResourcesBox"
+                                onClick={() =>
+                                  navigate(`/resource-mentor-details/${resource.id}`)
                                 }
-                                alt={resource.heading}
-                                />
-                            </>
-                            )}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <figure>
 
-                            {/* PDF */}
-                            {resource.resourceType === "pdf" && (
-                            <div className="OnlyIcon">
-                                <i className="fa fa-file-pdf-o PdfIcon" />
+                                  {/* VIDEO */}
+                                  {resource.resourceType === "video" && (
+                                    <>
+                                      <span className="Play">
+                                        <i className="fa fa-play" />
+                                      </span>
+
+                                      <img
+                                        src={
+                                          resource.thumbnailUrl ||
+                                          "images/Mentors.png"
+                                        }
+                                        alt={resource.heading}
+                                      />
+                                    </>
+                                  )}
+
+                                  {/* PDF */}
+                                  {resource.resourceType === "pdf" && (
+                                    <div className="OnlyIcon">
+                                      <i className="fa fa-file-pdf-o PdfIcon" />
+                                    </div>
+                                  )}
+
+                                  {/* PPT */}
+                                  {resource.resourceType === "ppt" && (
+                                    <div className="OnlyIcon">
+                                      <i className="fa fa-file-powerpoint-o PptIcon" />
+                                    </div>
+                                  )}
+
+                                </figure>
+
+                                <figcaption>
+                                  <p>{resource.heading}</p>
+                                </figcaption>
+                              </div>
                             </div>
-                            )}
-
-                            {/* PPT */}
-                            {resource.resourceType === "ppt" && (
-                            <div className="OnlyIcon">
-                                <i className="fa fa-file-powerpoint-o PptIcon" />
-                            </div>
-                            )}
-
-                        </figure>
-
-                        <figcaption>
-                            <p>{resource.heading}</p>
-                        </figcaption>
+                          );
+                        })
+                      ) : (
+                        <div className="col-12">
+                          <p>No completed courses</p>
                         </div>
+                      )}
                     </div>
-                    );
-                })
-                ) : (
-                <div className="col-12">
-                    <p>No completed courses</p>
-                </div>
-                )}
-            </div>
 
-            {/* <aside>
+                    {/* <aside>
                 <button className="Chat"></button>
                 <button className="Accept"></button>
             </aside> */}
+                  </div>
+
+
+                </div>
+              </div>
             </div>
-
-
           </div>
-        </div>
-      </div>
-    </div>
 
-    {/* Overlay */}
-    <div
-      className="modal-backdrop fade show"
-      onClick={() => setShowProfileModal(false)}
-    />
-  </div>
-)}
+          {/* Overlay */}
+          <div
+            className="modal-backdrop fade show"
+            onClick={() => setShowProfileModal(false)}
+          />
+        </div>
+      )}
     </>
   );
 };

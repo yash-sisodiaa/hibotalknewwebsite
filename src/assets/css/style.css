@@ -27,6 +27,7 @@ body {
   font-size: 13px;
   background-color: #fff;
   top: 0 !important;
+  min-height: auto !important;
 }
 
 
@@ -696,7 +697,8 @@ header {
   border-radius: 50%;
   text-align: center;
   line-height: 50px;
-  font-size: 20px
+  font-size: 20px;
+  z-index: 1;
 }
 
 .ProgramBox figcaption {
@@ -1640,6 +1642,9 @@ footer .Copyright p {
 
 .Navigation ul .profile a.dropdown-toggle .Icon {
   max-width: 30px;
+  max-height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .Navigation ul .profile .dropdown-menu {
@@ -1794,7 +1799,8 @@ footer .Copyright p {
 .WrapperArea {
   width: calc(100% - 260px);
   margin-left: 260px;
-  margin-top: 70px
+  margin-top: 70px;
+  overflow: hidden;
 }
 
 .WrapperArea .WrapperBox {
@@ -4784,3 +4790,9 @@ body.modal-open .modal-backdrop {
 .modal-backdrop.show{
   display: block !important;
 }
+
+
+.SearchBox .dropdown .dropdown-toggle img{ width: 25px !important; height: 25px !important; }
+
+
+
